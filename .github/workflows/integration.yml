@@ -1,0 +1,53 @@
+name: Integration Tests
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install python dependencies for tests
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r src/backend/requirements.txt
+
+      - name: Build and run Docker Compose
+        env:
+          COMPOSE_DOCKER_CLI_BUILD: 1
+          DOCKER_BUILDKIT: 1
+        run: |
+          docker compose up --build -d
+        env:
+          ADMIN_API_TOKEN: test-token
+
+      - name: Wait for backend health
+        run: |
+          for i in {1..60}; do
+            if curl -sS -o /dev/null -w "%{http_code}" http://localhost:5000/api/health | grep -q 200; then
+              echo "Backend healthy"; break
+            fi
+            sleep 2
+          done
+
+      - name: Run integration tests
+        run: |
+          python -m pytest src/backend/tests/integration_test.py -q
+        env:
+          ADMIN_API_TOKEN: test-token
+
+      - name: Tear down compose
+        if: always()
+        run: |
+          docker compose down -v
