@@ -1,0 +1,133 @@
+/* ProductsPage.css */
+.products-page {
+  min-height: 100vh;
+  background-color: #f5f0ed;
+  padding: 40px 20px;
+}
+
+.products-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+/* Sidebar */
+.products-sidebar {
+  position: sticky;
+  top: 20px;
+  left: 0px;
+}
+
+/* Main content */
+.products-main {
+  width: 100%;
+  padding-left: 2rem;
+}
+
+.products-header {
+  margin-bottom: 30px;
+}
+
+.products-title {
+  font-size: 32px;
+  font-weight: 400;
+  color: #8b7355;
+  margin: 0 0 8px 0;
+  font-family: 'Georgia', serif;
+}
+
+.products-count {
+  font-size: 16px;
+  color: #d4a5a5;
+  margin: 0;
+}
+
+/* Products Grid */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.product-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.product-boutiques {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  color: #d4a5a5;
+  font-size: 14px;
+}
+
+.product-boutiques svg {
+  color: #d4a5a5;
+  flex-shrink: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .products-container {
+    grid-template-columns: 280px 1fr;
+    gap: 30px;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 992px) {
+  .products-container {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .products-sidebar {
+    position: relative;
+    top: 0;
+    max-width: 100%;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .products-page {
+    padding: 20px 16px;
+  }
+
+  .products-title {
+    font-size: 26px;
+  }
+
+  .products-count {
+    font-size: 14px;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .products-title {
+    font-size: 22px;
+  }
+}
