@@ -1,12 +1,11 @@
-<<<<<<< Updated upstream
-<<<<<<< HEAD
+
 # Getting Started with Create React App
 =======
 # Sutraty - E-commerce Platform
 
 A modern, professional e-commerce platform for Boubaaya, featuring elegant women's fashion for the modern Algerian woman.
 
-## 🚀 Features
+## Features
 
 - **Responsive Design**: Mobile-first approach with seamless desktop experience
 - **Image Carousel**: Auto-playing carousel with keyboard navigation support
@@ -16,7 +15,7 @@ A modern, professional e-commerce platform for Boubaaya, featuring elegant women
 - **Accessibility**: ARIA labels and semantic HTML throughout
 - **Performance**: Lazy loading images and optimized rendering
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 src/
@@ -33,7 +32,7 @@ src/
 └── backend/             # Backend API (Python/Flask)
 ```
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Frontend**: React 19.2.0
 - **Icons**: Lucide React, React Icons
@@ -41,7 +40,7 @@ src/
 - **Build Tool**: Create React App
 - **Backend**: Python/Flask
 
-## 📦 Installation & Scripts
+## Installation & Scripts
 >>>>>>> Stashed changes
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -79,14 +78,14 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-## 🎨 Code Quality
+## Code Quality
 
 - **ESLint**: Configured for React best practices
 - **Prettier**: Code formatting with consistent style
 - **PropTypes**: Runtime type checking for components
 - **Custom Hooks**: Separation of concerns and reusability
 
-## 📝 Development Guidelines
+## Development Guidelines
 
 1. **Component Structure**: Each component should be self-contained with its own PropTypes
 2. **Naming Conventions**: Use PascalCase for components, camelCase for functions/variables
@@ -94,7 +93,7 @@ If you aren't satisfied with the build tool and configuration choices, you can `
 4. **Code Comments**: Add JSDoc comments for functions and components
 5. **Accessibility**: Always include ARIA labels and semantic HTML
 
-## 📚 Learn More
+## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
@@ -109,28 +108,11 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 - [Deployment](https://facebook.github.io/create-react-app/docs/deployment)
 - [Troubleshooting: `npm run build` fails to minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
-## 🌐 Environment
+## Environment
 
 - Node.js: 14.x or higher
 - npm: 6.x or higher
 
-## 📄 License
-
-© 2025 Boubaaya. All rights reserved.
-
-## 👥 Contact
-
-<<<<<<< Updated upstream
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-=======
 # 4X4-
 >>>>>>> 03907abba43ef085791703d5c8c631c1ed040f63
 =======
