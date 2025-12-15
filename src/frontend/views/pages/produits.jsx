@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import FilterBar from '../components/Filters';
-import ProductCard from '../components/ProductCard';
-import '../styles/produits.css';
-import Header from '../components/header';
-import Footer from '../components/footer';
-import image1 from '../../assets/images/image.png';
-import image2 from '../../assets/images/img2.png';
-import image3 from '../../assets/images/img3.png';
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import FilterBar from "../components/Filters";
+import ProductCard from "../components/ProductCard";
+import "../styles/produits.css";
+import Header from "../components/header";
+import Footer from "../components/footer";
+import image1 from "../../assets/images/image.png";
+import image2 from "../../assets/images/img2.png";
+import image3 from "../../assets/images/img3.png";
 
 // Sample products data
 const productsData = [
   {
     id: 1,
     image: image1,
-    name: 'Abaya Élégante Beige',
-    category: 'Abaya',
+    name: "Abaya Élégante Beige",
+    category: "Abaya",
     price: 8500,
     isNew: true,
     boutiques: 3,
@@ -23,8 +23,8 @@ const productsData = [
   {
     id: 2,
     image: image2,
-    name: 'Robe Longue Crème',
-    category: 'Robes',
+    name: "Robe Longue Crème",
+    category: "Robes",
     price: 6500,
     isNew: true,
     boutiques: 3,
@@ -32,8 +32,8 @@ const productsData = [
   {
     id: 3,
     image: image3,
-    name: 'Ensemble Chic Nude',
-    category: 'Ensembles',
+    name: "Ensemble Chic Nude",
+    category: "Ensembles",
     price: 7200,
     isNew: false,
     boutiques: 3,
@@ -41,8 +41,8 @@ const productsData = [
   {
     id: 4,
     image: image1,
-    name: 'Pantalon Denim Élégant',
-    category: 'Pantalons',
+    name: "Pantalon Denim Élégant",
+    category: "Pantalons",
     price: 5500,
     isNew: false,
     boutiques: 2,
@@ -50,8 +50,8 @@ const productsData = [
   {
     id: 5,
     image: image2,
-    name: 'Haut Brodé Blanc',
-    category: 'Hauts',
+    name: "Haut Brodé Blanc",
+    category: "Hauts",
     price: 4200,
     isNew: true,
     boutiques: 3,
@@ -59,8 +59,8 @@ const productsData = [
   {
     id: 6,
     image: image3,
-    name: 'Ensemble Moderne Noir',
-    category: 'Ensembles',
+    name: "Ensemble Moderne Noir",
+    category: "Ensembles",
     price: 9200,
     isNew: false,
     boutiques: 2,
@@ -70,9 +70,9 @@ const productsData = [
 function ProductsPage() {
   const location = useLocation();
   const [filters, setFilters] = useState({
-    category: location.state?.category || 'Tous',
-    price: 'Tous',
-    sort: 'Nouveautés',
+    category: location.state?.category || "Tous",
+    price: "Tous",
+    sort: "Nouveautés",
   });
 
   useEffect(() => {
@@ -93,29 +93,33 @@ function ProductsPage() {
     let filtered = [...productsData];
 
     // Filter by category
-    if (filters.category !== 'Tous') {
-      filtered = filtered.filter((product) => product.category === filters.category);
+    if (filters.category !== "Tous") {
+      filtered = filtered.filter(
+        (product) => product.category === filters.category
+      );
     }
 
     // Filter by price
-    if (filters.price !== 'Tous') {
-      if (filters.price === 'Moins de 6000 DA') {
+    if (filters.price !== "Tous") {
+      if (filters.price === "Moins de 6000 DA") {
         filtered = filtered.filter((product) => product.price < 6000);
-      } else if (filters.price === '6000 - 8000 DA') {
-        filtered = filtered.filter((product) => product.price >= 6000 && product.price <= 8000);
-      } else if (filters.price === 'Plus de 8000 DA') {
+      } else if (filters.price === "6000 - 8000 DA") {
+        filtered = filtered.filter(
+          (product) => product.price >= 6000 && product.price <= 8000
+        );
+      } else if (filters.price === "Plus de 8000 DA") {
         filtered = filtered.filter((product) => product.price > 8000);
       }
     }
 
     // Sort products
-    if (filters.sort === 'Prix croissant') {
+    if (filters.sort === "Prix croissant") {
       filtered.sort((a, b) => a.price - b.price);
-    } else if (filters.sort === 'Prix décroissant') {
+    } else if (filters.sort === "Prix décroissant") {
       filtered.sort((a, b) => b.price - a.price);
-    } else if (filters.sort === 'Nom A-Z') {
+    } else if (filters.sort === "Nom A-Z") {
       filtered.sort((a, b) => a.name.localeCompare(b.name));
-    } else if (filters.sort === 'Nouveautés') {
+    } else if (filters.sort === "Nouveautés") {
       filtered.sort((a, b) => b.isNew - a.isNew);
     }
 
@@ -132,14 +136,19 @@ function ProductsPage() {
         <div className="products-container">
           {/* Sidebar with filters */}
           <aside className="products-sidebar">
-            <FilterBar onFilterChange={handleFilterChange} initialFilters={filters} />
+            <FilterBar
+              onFilterChange={handleFilterChange}
+              initialFilters={filters}
+            />
           </aside>
 
           {/* Main content area */}
           <main className="products-main">
             <div className="products-header">
               <h1 className="products-title">Explorez nos Produits</h1>
-              <p className="products-count">{filteredProducts.length} produits trouvés</p>
+              <p className="products-count">
+                {filteredProducts.length} produits trouvés
+              </p>
             </div>
 
             <div className="products-grid">
@@ -151,7 +160,7 @@ function ProductsPage() {
                     category={product.category}
                     price={product.price}
                     isNew={product.isNew}
-                    productId={product.id}
+                    productId={`p${product.id}`}
                   />
                   <div className="product-boutiques">
                     <svg

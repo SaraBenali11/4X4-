@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./frontend/views/App";
 import reportWebVitals from "./reportWebVitals";
+import OutfitCreator from "./frontend/views/pages/createoutfit";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

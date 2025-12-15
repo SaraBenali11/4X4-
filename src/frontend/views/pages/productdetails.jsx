@@ -1,97 +1,65 @@
-import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import Header from '../components/header';
-import Footer from '../components/footer';
-import ProductDetail from '../components/ProductDetail';
-import image1 from '../../assets/images/image.png';
-import image2 from '../../assets/images/img2.png';
-import image3 from '../../assets/images/img3.png';
+import React from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import Header from "../components/header";
+import Footer from "../components/footer";
+import ProductDetail from "../components/ProductDetail";
+import { newProducts } from "../../../database/data/mockData";
 
-// Sample products data (same as in produits.jsx)
+// Enhanced products data with additional details for product page
 const productsData = [
   {
-    id: 1,
-    image: image1,
-    name: 'Abaya Élégante Beige',
-    category: 'Abaya',
+    id: "p1",
+    image: newProducts[0].image,
+    name: "Abaya Élégante Beige",
+    category: "Abaya",
     price: 8500,
+    oldPrice: 0,
     isNew: true,
-    boutiques: 3,
-    description: 'Une abaya élégante en tissu de qualité supérieure, parfaite pour toutes occasions.',
-    sizes: ['S', 'M', 'L', 'XL'],
-    colors: ['Beige', 'Noir', 'Blanc'],
-    features: ['Tissu de qualité', 'Coupe moderne', 'Confortable', 'Lavable en machine'],
-    availability: ['Alger Centre', 'Oran', 'Constantine']
+    description:
+      "Une abaya élégante en tissu de qualité supérieure, parfaite pour toutes occasions.",
+    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    colors: ["Beige", "Noir", "Blanc"],
+    features: [
+      "Tissu de qualité",
+      "Coupe moderne",
+      "Confortable",
+      "Lavable en machine",
+    ],
+    availability: ["Alger Centre", "Oran", "Constantine"],
   },
   {
-    id: 2,
-    image: image2,
-    name: 'Robe Longue Crème',
-    category: 'Robes',
-    price: 6500,
-    isNew: true,
-    boutiques: 3,
-    description: 'Robe longue élégante en couleur crème, idéale pour les sorties occasionnelles.',
-    sizes: ['S', 'M', 'L', 'XL'],
-    colors: ['Crème', 'Beige', 'Blanc'],
-    features: ['Tissu fluide', 'Coupe ajustée', 'Douce au toucher', 'Polyvalent'],
-    availability: ['Alger Centre', 'Annaba', 'Oran']
-  },
-  {
-    id: 3,
-    image: image3,
-    name: 'Ensemble Chic Nude',
-    category: 'Ensembles',
-    price: 7200,
-    isNew: false,
-    boutiques: 3,
-    description: 'Ensemble chic en couleur nude, parfaite pour un look moderne et élégant.',
-    sizes: ['S', 'M', 'L'],
-    colors: ['Nude', 'Beige', 'Rose pâle'],
-    features: ['Ensemble coordonné', 'Style moderne', 'Confort quotidien', 'Qualité premium'],
-    availability: ['Alger Centre', 'Constantine', 'Setif']
-  },
-  {
-    id: 4,
-    image: image1,
-    name: 'Pantalon Denim Élégant',
-    category: 'Pantalons',
-    price: 5500,
-    isNew: false,
-    boutiques: 2,
-    description: 'Pantalon denim élégant avec une coupe moderne et confortable.',
-    sizes: ['S', 'M', 'L', 'XL'],
-    colors: ['Bleu', 'Noir', 'Gris'],
-    features: ['Denim de qualité', 'Coupe slim', 'Élastique', 'Résistant'],
-    availability: ['Alger Centre', 'Oran']
-  },
-  {
-    id: 5,
-    image: image2,
-    name: 'Haut Brodé Blanc',
-    category: 'Hauts',
+    id: "p2",
+    image: newProducts[1].image,
+    name: "Pantalon Chic",
+    category: "Pantalon",
     price: 4200,
+    oldPrice: 0,
     isNew: true,
-    boutiques: 3,
-    description: 'Haut brodé blanc avec des détails délicats et élégants.',
-    sizes: ['S', 'M', 'L'],
-    colors: ['Blanc', 'Crème', 'Beige'],
-    features: ['Broderie fine', 'Tissu léger', 'Style traditionnel', 'Confortable'],
-    availability: ['Alger Centre', 'Constantine', 'Tlemcen']
+    description: "Pantalon chic avec une coupe moderne et confortable.",
+    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    colors: ["Noir", "Beige", "Gris"],
+    features: ["Coupe moderne", "Confortable", "Tissu premium", "Polyvalent"],
+    availability: ["Alger Centre", "Oran", "Constantine"],
   },
   {
-    id: 6,
-    image: image3,
-    name: 'Ensemble Moderne Noir',
-    category: 'Ensembles',
-    price: 9200,
+    id: "p3",
+    image: newProducts[2].image,
+    name: "T-shirt Bleu",
+    category: "Haut",
+    price: 1200,
+    oldPrice: 0,
     isNew: false,
-    boutiques: 2,
-    description: 'Ensemble moderne en couleur noire, parfait pour un look sophistiqué.',
-    sizes: ['S', 'M', 'L', 'XL'],
-    colors: ['Noir', 'Gris foncé', 'Marine'],
-    features: ['Design moderne', 'Tissu premium', 'Coupe élégante', 'Polyvalent'],
-    availability: ['Alger Centre', 'Oran']
+    description:
+      "T-shirt bleu de qualité supérieure, confortable pour le quotidien.",
+    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    colors: ["Bleu", "Blanc", "Noir"],
+    features: [
+      "Tissu respirant",
+      "Coupe ajustée",
+      "Lavable en machine",
+      "Confortable",
+    ],
+    availability: ["Alger Centre", "Oran", "Constantine"],
   },
 ];
 
@@ -103,11 +71,11 @@ function Productdetpage() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // Find the product by ID
-  const product = productsData.find(p => p.id === parseInt(id));
+  // Find the product by ID (id is a string like "p1", "p2", etc.)
+  const product = productsData.find((p) => p.id === id);
 
   const handleBack = () => {
-    navigate('/produits');
+    navigate("/");
   };
 
   return (
