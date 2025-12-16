@@ -1,6 +1,6 @@
-import Footer from '../components/footer';
-import Header from '../components/header';
-import AdminLogin from '../components/AdminLogin';
+import Footer from "../components/footer";
+import Header from "../components/header";
+import AdminLogin from "../adminview/components/AdminLogin";
 /**
  * Homepage component
  * Main landing page with carousel, new products, and reviews

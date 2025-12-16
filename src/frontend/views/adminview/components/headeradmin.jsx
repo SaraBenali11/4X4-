@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Menu, LayoutDashboard, User } from "lucide-react";
+import { navigationLinks } from "../../../../database/data/mockData";
 import "../styles/header.css";
-import { navigationLinks } from "../../../database/data/mockData";
 
 /**
  * Main header component with navigation and user actions
@@ -10,6 +10,7 @@ import { navigationLinks } from "../../../database/data/mockData";
  */
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
@@ -39,16 +40,20 @@ function Header() {
           </div>
 
           <div className="header-icons">
-            <button className="icon-button" aria-label="View dashboard">
+            <button
+              className="icon-button"
+              aria-label="View dashboard"
+              onClick={() => navigate("/")}
+            >
               <LayoutDashboard className="icon" />
             </button>
-            <Link
-              to="/login"
+            <button
               className="icon-button"
               aria-label="Account settings"
+              onClick={() => navigate("/userinfo")}
             >
               <User className="icon" />
-            </Link>
+            </button>
           </div>
         </div>
 

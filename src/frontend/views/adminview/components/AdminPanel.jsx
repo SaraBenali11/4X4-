@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
-import '../styles/AdminPanel.css';
-import { stats, initialOrders, recuesOrders } from '../../../database/models/listsfortesting';
-import ProduitsContent from './ProduitsContent';
-import OrderCard from './ordercard';
+import React, { useState } from "react";
+import "../../adminview/styles/AdminPanel.css";
+import {
+  stats,
+  initialOrders,
+  recuesOrders,
+} from "../../../../database/models/listsfortesting.js";
+import ProduitsContent from "../../components/ProduitsContent.jsx";
+import OrderCard from "../../components/ordercard.jsx";
 
 export default function AdminPanel() {
-  const [activeTab, setActiveTab] = useState('commandes');
+  const [activeTab, setActiveTab] = useState("commandes");
   const [orders] = useState(initialOrders);
 
   return (
@@ -33,27 +37,27 @@ export default function AdminPanel() {
         <section className="tabs-section">
           <nav className="tabs">
             <button
-              className={`tab ${activeTab === 'commandes' ? 'active' : ''}`}
-              onClick={() => setActiveTab('commandes')}
+              className={`tab ${activeTab === "commandes" ? "active" : ""}`}
+              onClick={() => setActiveTab("commandes")}
             >
               Commandes
             </button>
             <button
-              className={`tab ${activeTab === 'produits' ? 'active' : ''}`}
-              onClick={() => setActiveTab('produits')}
+              className={`tab ${activeTab === "produits" ? "active" : ""}`}
+              onClick={() => setActiveTab("produits")}
             >
               Produits
             </button>
             <button
-              className={`tab ${activeTab === 'recues' ? 'active' : ''}`}
-              onClick={() => setActiveTab('recues')}
+              className={`tab ${activeTab === "recues" ? "active" : ""}`}
+              onClick={() => setActiveTab("recues")}
             >
               Reçues / Retournées
             </button>
           </nav>
 
           <div className="panel">
-            {activeTab === 'commandes' && (
+            {activeTab === "commandes" && (
               <>
                 <h2 className="panel-title">Demandes de Commande</h2>
                 <div className="panel-content">
@@ -64,11 +68,13 @@ export default function AdminPanel() {
               </>
             )}
 
-            {activeTab === 'produits' && <ProduitsContent />}
+            {activeTab === "produits" && <ProduitsContent />}
 
-            {activeTab === 'recues' && (
+            {activeTab === "recues" && (
               <>
-                <h2 className="panel-title">Les commandes Reçues ou Retournées</h2>
+                <h2 className="panel-title">
+                  Les commandes Reçues ou Retournées
+                </h2>
                 <div className="panel-content">
                   {recuesOrders.map((o) => (
                     <OrderCard key={o.id} order={o} isRecues={true} />

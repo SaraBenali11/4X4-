@@ -1,0 +1,31 @@
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px;
+}
+
+h4 {
+  margin-bottom: 16px;
+  color: var(--text);
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  padding-left: 16px;
+  position: relative;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
+li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+}

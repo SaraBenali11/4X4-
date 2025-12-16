@@ -4,7 +4,8 @@ import { CartProvider } from "../context/CartContext";
 import { FavoritesProvider } from "../context/FavoritesContext";
 import { useToast, ToastContainer } from "../components/Toast";
 import Homepage from "./pages/homepage";
-import Adminpanelpage from "./pages/adminpanelpage";
+import Adminpanelpage from "./adminview/pages/adminpanelpage";
+import AdminInfo from "./adminview/pages/admininfo";
 import OutfitInspiration from "./pages/inspiration";
 import LoginPage from "./pages/loginpage";
 import Productdetpage from "./pages/productdetails";
@@ -34,6 +35,7 @@ export default function App() {
               <Route path="/inspiration" element={<OutfitInspiration />} />
               <Route path="/creer-tenue" element={<OutfitCreator />} />
               <Route path="/admin" element={<Adminpanelpage />} />
+              <Route path="/admin-info" element={<AdminInfo />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/product/:id" element={<Productdetpage />} />
               <Route path="/outfit/:id" element={<OutfitDetailsPage />} />
