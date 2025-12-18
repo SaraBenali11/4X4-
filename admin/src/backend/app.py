@@ -151,6 +151,9 @@ app.register_blueprint(products_bp, url_prefix='/api')
 from controllers.admin import bp as admin_bp
 app.register_blueprint(admin_bp, url_prefix='/api')
 
+from controllers.outfits import bp as outfits_bp
+app.register_blueprint(outfits_bp, url_prefix='/api')
+
 # Run the Flask app
 if __name__ == '__main__':
     # Initialize database tables

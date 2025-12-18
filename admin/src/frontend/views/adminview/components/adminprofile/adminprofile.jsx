@@ -11,6 +11,7 @@ export default function AdminProfile() {
     email: "",
     phone: "",
     address: "",
+    password: "",
   });
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState("");
@@ -206,6 +207,18 @@ export default function AdminProfile() {
               rows="3"
             />
             {errors.address && <span className={styles.fieldError}>{errors.address}</span>}
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="password">Nouveau mot de passe (laisser vide pour ne pas changer)</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password || ""}
+              onChange={handleChange}
+              placeholder="Nouveau mot de passe"
+            />
           </div>
 
           <div className={styles.formActions}>

@@ -16,9 +16,11 @@ export const AdminAuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Always clear authentication on app load - force login every time
-    adminService.logout();
-    setAdmin(null);
+    // Check for existing session
+    const existingAdmin = adminService.getCurrentAdmin();
+    if (existingAdmin && adminService.isAuthenticated()) {
+      setAdmin(existingAdmin);
+    }
     setLoading(false);
   }, []);
 

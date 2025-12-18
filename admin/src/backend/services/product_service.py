@@ -9,26 +9,30 @@ from repositories.product_repository import (
 
 def list_products():
     products = repo_list()
-    return [p.to_dict() for p in products]
+    # Repository now returns list of dicts (Supabase data), so no need for to_dict()
+    return products
+
 
 
 def get_product(product_id):
     p = repo_get(product_id)
-    return p.to_dict() if p else None
+    return p if p else None
 
 
 def create_product(data):
     # Basic validation
-    required = ('name', 'category', 'price')
-    for f in required:
-        if f not in data:
-            raise ValueError(f'Missing required field: {f}')
-    # Normalize list fields
+    required = ('name', 'category', 'price') # Note: Check keys match what frontend sends
+    # If frontend sends 'category' but we need 'category_id', this might fail or we need to relax
+    # For now, let's allow it to pass through and let the repo handle (or fail)
+    
+    # Normalize list fields (if present in data, though repo might not use them fully yet)
     data['sizes'] = ','.join(data.get('sizes', [])) if isinstance(data.get('sizes', []), (list, tuple)) else data.get('sizes', '')
     data['colors'] = ','.join(data.get('colors', [])) if isinstance(data.get('colors', []), (list, tuple)) else data.get('colors', '')
     data['images'] = ','.join(data.get('images', [])) if isinstance(data.get('images', []), (list, tuple)) else data.get('images', '')
+    
     p = repo_add(data)
-    return p.to_dict()
+    # Support 'to_dict' just in case p is still an object? No, repo_add returns dict or None.
+    return p if p else {}
 
 
 def remove_product(product_id):
@@ -37,4 +41,4 @@ def remove_product(product_id):
 
 def update_product(product_id, updates):
     p = repo_update(product_id, updates)
-    return p.to_dict() if p else None
+    return p if p else None

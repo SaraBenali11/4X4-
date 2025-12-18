@@ -64,6 +64,84 @@ body {
   color: var(--dark-rose);
 }
 
+/* Header actions container */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Profile icon button */
+.profile-icon-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--card-bg);
+  border: 1px solid rgba(213,180,180,0.3);
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.profile-icon-btn:hover {
+  background: var(--soft-rose);
+  border-color: var(--muted-rose);
+}
+
+.profile-icon {
+  font-size: 20px;
+}
+
+.profile-name {
+  font-size: 14px;
+  color: var(--dark-rose);
+  font-weight: 500;
+}
+
+/* Profile overlay and modal */
+.profile-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 80px;
+  z-index: 1000;
+}
+
+.profile-modal {
+  background: var(--card-bg);
+  border-radius: 12px;
+  width: 500px;
+  max-width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 24px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  position: relative;
+}
+
+.close-profile {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: var(--muted-rose);
+  transition: color 0.2s;
+}
+
+.close-profile:hover {
+  color: var(--dark-rose);
+}
+
 /* Container */
 .container { 
   padding: 18px 28px 40px; 

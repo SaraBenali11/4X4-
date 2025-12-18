@@ -6,6 +6,8 @@ import {
   recuesOrders,
 } from "../../../../database/models/listsfortesting.js";
 import ProduitsContent from "./ProduitsContent.jsx";
+import OutfitsContent from "./OutfitsContent.jsx";
+import AdminProfile from "./adminprofile/adminprofile.jsx";
 import OrderCard from "./ordercard.jsx";
 import { useAdminAuth } from "../../../context/AdminAuthContext";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +15,8 @@ import { useNavigate } from "react-router-dom";
 export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState("commandes");
   const [orders] = useState(initialOrders);
-  const { logout } = useAdminAuth();
+  const [showProfile, setShowProfile] = useState(false);
+  const { logout, admin } = useAdminAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -25,10 +28,30 @@ export default function AdminPanel() {
     <div className="app-root">
       <header className="header">
         <h1 className="title">Tableau de Bord Admin</h1>
-        <button className="logout" onClick={handleLogout}>
-          Déconnexion
-        </button>
+        <div className="header-actions">
+          <button
+            className="profile-icon-btn"
+            onClick={() => setShowProfile(!showProfile)}
+            title="Mon Profil"
+          >
+            <span className="profile-icon">👤</span>
+            {admin?.name && <span className="profile-name">{admin.name}</span>}
+          </button>
+          <button className="logout" onClick={handleLogout}>
+            Déconnexion
+          </button>
+        </div>
       </header>
+
+      {/* Profile Modal/Dropdown */}
+      {showProfile && (
+        <div className="profile-overlay" onClick={() => setShowProfile(false)}>
+          <div className="profile-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="close-profile" onClick={() => setShowProfile(false)}>×</button>
+            <AdminProfile />
+          </div>
+        </div>
+      )}
 
       <main className="container">
         <section className="stats-row">
@@ -65,6 +88,12 @@ export default function AdminPanel() {
             >
               Reçues / Retournées
             </button>
+            <button
+              className={`tab ${activeTab === "tenues" ? "active" : ""}`}
+              onClick={() => setActiveTab("tenues")}
+            >
+              Tenues
+            </button>
           </nav>
 
           <div className="panel">
@@ -93,9 +122,12 @@ export default function AdminPanel() {
                 </div>
               </>
             )}
+
+            {activeTab === "tenues" && <OutfitsContent />}
           </div>
         </section>
       </main>
     </div>
   );
 }
+
