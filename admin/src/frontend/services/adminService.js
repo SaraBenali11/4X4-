@@ -51,7 +51,7 @@ export const adminService = {
         return { success: false, error: result.error || 'Email ou mot de passe incorrect' };
       }
 
-      // Store admin session in localStorage
+      // Store admin session in sessionStorage
       const adminData = {
         id: admin.id,
         email: admin.email,
@@ -61,8 +61,8 @@ export const adminService = {
         created_at: admin.created_at,
       };
 
-      localStorage.setItem('admin', JSON.stringify(adminData));
-      localStorage.setItem('admin_token', admin.id); // Simple token for now
+      sessionStorage.setItem('admin', JSON.stringify(adminData));
+      sessionStorage.setItem('admin_token', admin.id); // Simple token for now
 
       return { success: true, data: adminData };
     } catch (error) {
@@ -77,7 +77,7 @@ export const adminService = {
    */
   getCurrentAdmin() {
     try {
-      const adminData = localStorage.getItem('admin');
+      const adminData = sessionStorage.getItem('admin');
       return adminData ? JSON.parse(adminData) : null;
     } catch (error) {
       console.error('Error getting admin session:', error);
@@ -90,15 +90,15 @@ export const adminService = {
    * @returns {boolean}
    */
   isAuthenticated() {
-    return !!localStorage.getItem('admin_token');
+    return !!sessionStorage.getItem('admin_token');
   },
 
   /**
    * Logout admin
    */
   logout() {
-    localStorage.removeItem('admin');
-    localStorage.removeItem('admin_token');
+    sessionStorage.removeItem('admin');
+    sessionStorage.removeItem('admin_token');
   },
 
   /**
@@ -122,8 +122,8 @@ export const adminService = {
         return { success: false, error: 'Erreur lors de la récupération du profil' };
       }
 
-      // Update localStorage
-      localStorage.setItem('admin', JSON.stringify(data));
+      // Update sessionStorage
+      sessionStorage.setItem('admin', JSON.stringify(data));
 
       return { success: true, data };
     } catch (error) {
@@ -159,8 +159,8 @@ export const adminService = {
         return { success: false, error: result.error || 'Erreur lors de la mise à jour du profil' };
       }
 
-      // Update localStorage
-      localStorage.setItem('admin', JSON.stringify(result.data));
+      // Update sessionStorage
+      sessionStorage.setItem('admin', JSON.stringify(result.data));
 
       return { success: true, data: result.data };
     } catch (error) {
