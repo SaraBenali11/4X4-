@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import OutfitModal from "./OutfitModal";
 import "./OutfitsContent.css";
+import { supabase } from "../../../config/supabase";
 
 export default function OutfitsContent() {
   const [outfits, setOutfits] = useState([]);
@@ -12,15 +13,26 @@ export default function OutfitsContent() {
   const fetchOutfits = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:5000/api/outfits");
-      const data = await response.json();
-      if (data.success) {
-        setOutfits(data.data);
-      } else {
-        setError(data.error || "Failed to fetch outfits");
-      }
+      const { data, error } = await supabase
+        .from("outfits")
+        .select(`
+          *,
+          outfit_products (
+             product:products (*)
+          )
+        `)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      const formattedData = data.map(outfit => ({
+        ...outfit,
+        products: outfit.outfit_products?.map(op => op.product) || []
+      }));
+
+      setOutfits(formattedData);
     } catch (err) {
-      setError("Error connecting to server");
+      setError(err.message);
       console.error(err);
     } finally {
       setLoading(false);
@@ -41,21 +53,24 @@ export default function OutfitsContent() {
     setIsModalOpen(true);
   };
 
+
+
   const handleDelete = async (id) => {
     if (!window.confirm("Êtes-vous sûr de vouloir supprimer cette tenue ?")) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/outfits/${id}`, {
-        method: "DELETE",
-      });
-      const data = await response.json();
-      if (data.success) {
-        setOutfits(outfits.filter((o) => o.id !== id));
+      const { error } = await supabase
+        .from("outfits")
+        .delete()
+        .eq("id", id);
+
+      if (error) {
+        alert("Erreur lors de la suppression: " + error.message);
       } else {
-        alert("Erreur lors de la suppression: " + data.error);
+        setOutfits(outfits.filter((o) => o.id !== id));
       }
     } catch (err) {
-      alert("Erreur serveur");
+      alert("Erreur serveur: " + err.message);
     }
   };
 
@@ -82,6 +97,7 @@ export default function OutfitsContent() {
         <table className="outfits-table">
           <thead>
             <tr>
+              <th>Image</th>
               <th>Titre</th>
               <th>Description</th>
               <th>Produits</th>
@@ -92,13 +108,22 @@ export default function OutfitsContent() {
           <tbody>
             {outfits.length === 0 ? (
               <tr>
-                <td colSpan="5" className="empty-row">
+                <td colSpan="6" className="empty-row">
                   Aucune tenue trouvée. Cliquez sur "Ajouter une Tenue" pour en créer une.
                 </td>
               </tr>
             ) : (
               outfits.map((outfit) => (
                 <tr key={outfit.id}>
+                  <td className="outfit-image-cell">
+                    {outfit.image ? (
+                      <>
+                        <img src={outfit.image} alt={outfit.title} style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px' }} />
+                      </>
+                    ) : (
+                      <span style={{ fontSize: '0.8rem', color: '#888' }}>Sans image</span>
+                    )}
+                  </td>
                   <td className="outfit-title-cell">{outfit.title}</td>
                   <td className="outfit-desc-cell">{outfit.description || "-"}</td>
                   <td className="outfit-products-cell">

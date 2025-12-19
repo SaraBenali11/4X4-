@@ -1,34 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { useAdminAuth } from "../../../context/AdminAuthContext";
+import { supabase } from "../../../config/supabase";
 
 export default function OutfitModal({ isOpen, onClose, outfit }) {
     const { admin } = useAdminAuth();
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [selectedProducts, setSelectedProducts] = useState([]);
+    const [imageFile, setImageFile] = useState(null);
+    const [currentImage, setCurrentImage] = useState(null);
+
     const [allProducts, setAllProducts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [saving, setSaving] = useState(false);
 
     useEffect(() => {
-        // Load products for selector
         const fetchProducts = async () => {
             try {
                 setLoading(true);
-                // Assuming there is an endpoint for products. 
-                // Based on app.py: app.register_blueprint(products_bp, url_prefix='/api')
-                // We need to find the products endpoint. Usually /api/products
-                const response = await fetch("http://localhost:5000/api/products");
-                const data = await response.json();
-                // Adjust based on actual product API response structure
-                // Looking at ProduitsContent.jsx, it was mock data.
-                // Looking at backend/controllers/products.py (I haven't read it but app.py registers it), 
-                // I assume it returns standard JSON.
-                if (data && (Array.isArray(data) || Array.isArray(data.products))) {
-                    setAllProducts(Array.isArray(data) ? data : data.products);
-                } else if (data.status === 'success' && data.data) {
-                    setAllProducts(data.data);
-                }
+                const { data, error } = await supabase
+                    .from("products")
+                    .select("*")
+                    .order("name");
+
+                if (error) throw error;
+                setAllProducts(data || []);
             } catch (err) {
                 console.error("Failed to load products", err);
             } finally {
@@ -43,11 +39,14 @@ export default function OutfitModal({ isOpen, onClose, outfit }) {
             setTitle(outfit.title);
             setDescription(outfit.description || "");
             setSelectedProducts(outfit.products ? outfit.products.map(p => p.id) : []);
+            setCurrentImage(outfit.image || null);
         } else {
             setTitle("");
             setDescription("");
             setSelectedProducts([]);
+            setCurrentImage(null);
         }
+        setImageFile(null);
     }, [outfit]);
 
     const toggleProduct = (productId) => {
@@ -60,40 +59,103 @@ export default function OutfitModal({ isOpen, onClose, outfit }) {
         });
     };
 
+    const handleImageChange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            setImageFile(e.target.files[0]);
+        }
+    };
+
+    const uploadImage = async (file) => {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Date.now()}_${Math.floor(Math.random() * 1000)}.${fileExt}`;
+        const filePath = `${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+            .from('outfits')
+            .upload(filePath, file);
+
+        if (uploadError) {
+            throw uploadError;
+        }
+
+        // Use Signed URL (valid for 10 years) to bypass Public Bucket issues
+        const { data, error: urlError } = await supabase.storage
+            .from('outfits')
+            .createSignedUrl(filePath, 315360000); // 10 years in seconds
+
+        if (urlError) throw urlError;
+
+        return data.signedUrl;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSaving(true);
 
         try {
-            const url = outfit
-                ? `http://localhost:5000/api/outfits/${outfit.id}`
-                : "http://localhost:5000/api/outfits";
+            let outfitId = outfit?.id;
+            let finalImageUrl = currentImage;
 
-            const method = outfit ? "PUT" : "POST";
+            if (imageFile) {
+                finalImageUrl = await uploadImage(imageFile);
+            }
 
-            const body = {
+            const outfitData = {
                 title,
                 description,
-                product_ids: selectedProducts,
-                created_by: admin ? admin.id : null
+                image: finalImageUrl
             };
 
-            const response = await fetch(url, {
-                method,
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(body)
-            });
-
-            const resData = await response.json();
-
-            if (resData.success) {
-                onClose(true); // true = refresh
-            } else {
-                alert("Erreur: " + resData.error);
+            if (admin?.id) {
+                outfitData.created_by = admin.id;
             }
+
+            if (outfit) {
+                // UPDATE
+                const { error } = await supabase
+                    .from("outfits")
+                    .update(outfitData)
+                    .eq("id", outfitId);
+
+                if (error) throw error;
+
+                // Update relations
+                const { error: delError } = await supabase
+                    .from("outfit_products")
+                    .delete()
+                    .eq("outfit_id", outfitId);
+
+                if (delError) throw delError;
+
+            } else {
+                // INSERT
+                const { data, error } = await supabase
+                    .from("outfits")
+                    .insert(outfitData)
+                    .select();
+
+                if (error) throw error;
+                outfitId = data[0].id;
+            }
+
+            // Insert relations
+            if (selectedProducts.length > 0) {
+                const relations = selectedProducts.map(pId => ({
+                    outfit_id: outfitId,
+                    product_id: pId
+                }));
+
+                const { error: relError } = await supabase
+                    .from("outfit_products")
+                    .insert(relations);
+
+                if (relError) throw relError;
+            }
+
+            onClose(true); // true = refresh
         } catch (err) {
             console.error(err);
-            alert("Erreur lors de la sauvegarde.");
+            alert("Erreur lors de la sauvegarde: " + err.message);
         } finally {
             setSaving(false);
         }
@@ -119,6 +181,26 @@ export default function OutfitModal({ isOpen, onClose, outfit }) {
                             required
                             style={styles.input}
                         />
+                    </div>
+
+                    <div style={styles.formGroup}>
+                        <label>Image de la tenue</label>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                            style={styles.input}
+                        />
+                        {(imageFile || currentImage) && (
+                            <div style={{ marginTop: '10px' }}>
+                                <p style={{ fontSize: '0.8rem', color: '#666' }}>Aperçu:</p>
+                                <img
+                                    src={imageFile ? URL.createObjectURL(imageFile) : currentImage}
+                                    alt="Preview"
+                                    style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '4px' }}
+                                />
+                            </div>
+                        )}
                     </div>
 
                     <div style={styles.formGroup}>
@@ -148,7 +230,7 @@ export default function OutfitModal({ isOpen, onClose, outfit }) {
                                         <input
                                             type="checkbox"
                                             checked={selectedProducts.includes(p.id)}
-                                            onChange={() => { }} // handled by div click
+                                            onChange={() => { }}
                                             style={{ marginRight: "10px" }}
                                         />
                                         <span>{p.name} - {p.price} DA</span>
