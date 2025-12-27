@@ -44,3 +44,19 @@ __pycache__/
 env/
 venv/
 ENV/
+# Node
+node_modules/
+**/node_modules/
+
+# Python
+__pycache__/
+*.pyc
+.env
+
+# Conda / venv
+.env/
+venv/
+DM_ENV/
+
+# Build / cache
+.cache/
