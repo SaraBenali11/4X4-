@@ -1,0 +1,267 @@
+/* OutfitInspiration.css */
+.outfit-inspiration-page {
+  min-height: 100vh;
+  background-color: #f5f0ed;
+  padding: 40px 20px;
+}
+
+.inspiration-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.inspiration-title {
+  font-size: 36px;
+  font-weight: 400;
+  color: #8b7355;
+  margin: 0 0 12px 0;
+  font-family: 'Georgia', serif;
+}
+
+.inspiration-subtitle {
+  font-size: 16px;
+  color: #d4a5a5;
+  margin: 0 0 40px 0;
+  line-height: 1.5;
+}
+
+/* Outfits Grid */
+.outfits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 24px;
+}
+
+.outfit-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.outfit-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+.outfit-image-wrapper {
+  width: 100%;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  background-color: #f5f5f5;
+}
+
+.outfit-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.outfit-card:hover .outfit-image {
+  transform: scale(1.05);
+}
+
+/* Outfit Info */
+.outfit-info {
+  padding: 24px;
+}
+
+.outfit-name {
+  font-size: 20px;
+  font-weight: 400;
+  color: #8b7355;
+  margin: 0 0 8px 0;
+}
+
+.outfit-author {
+  font-size: 14px;
+  color: #d4a5a5;
+  margin: 0 0 16px 0;
+}
+
+/* Products Section */
+.outfit-products {
+  margin-bottom: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e8e0db;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.products-title {
+  font-size: 15px;
+  font-weight: 400;
+  color: #8b7355;
+  margin: 0 0 16px 0;
+}
+
+.products-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.product-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background-color: #f9f5f3;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.product-item:hover {
+  background-color: #f5f0ed;
+}
+
+.product-thumb {
+  width: 60px;
+  height: 75px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.product-details {
+  flex: 1;
+}
+
+.product-name {
+  font-size: 14px;
+  color: #8b7355;
+  margin: 0 0 4px 0;
+}
+
+.product-price {
+  font-size: 14px;
+  color: #d4a5a5;
+  margin: 0;
+}
+
+.view-product-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid #d4c5bd;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.view-product-btn svg {
+  color: #8b7355;
+}
+
+.view-product-btn:hover {
+  background: #8b7355;
+  border-color: #8b7355;
+}
+
+.view-product-btn:hover svg {
+  color: white;
+}
+
+/* Toggle Button */
+.toggle-products-btn {
+  width: 100%;
+  padding: 12px;
+  background: transparent;
+  border: 1px solid #d4c5bd;
+  border-radius: 8px;
+  color: #8b7355;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+  margin-top: 16px;
+}
+
+.toggle-products-btn:hover {
+  background: #f9f5f3;
+  border-color: #8b7355;
+}
+
+.toggle-products-btn svg {
+  transition: transform 0.3s;
+}
+
+.toggle-products-btn svg.rotated {
+  transform: rotate(180deg);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .outfits-grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .outfit-inspiration-page {
+    padding: 20px 16px;
+  }
+
+  .inspiration-title {
+    font-size: 28px;
+  }
+
+  .inspiration-subtitle {
+    font-size: 14px;
+  }
+
+  .outfits-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .outfit-info {
+    padding: 20px;
+  }
+
+  .outfit-name {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .inspiration-title {
+    font-size: 24px;
+  }
+
+  .outfits-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .product-thumb {
+    width: 50px;
+    height: 62px;
+  }
+
+  .product-name {
+    font-size: 13px;
+  }
+
+  .product-price {
+    font-size: 13px;
+  }
+}
