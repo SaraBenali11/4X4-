@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { FaFacebook, FaInstagram } from 'react-icons/fa';
-import '../styles/BoubaayaFooter.css';
-import { COMPANY_INFO, SOCIAL_LINKS } from '../../config/constants';
-import { footerLinks } from '../../../database/data/mockData';
-import { isValidEmail } from '../../utils/validators';
+import React, { useState } from "react";
+import { FaFacebook, FaInstagram } from "react-icons/fa";
+import "../styles/BoubaayaFooter.css";
+import { COMPANY_INFO, SOCIAL_LINKS } from "../../config/constants";
+import { footerLinks } from "../../../database/data/mockData";
+import { isValidEmail } from "../../utils/validators";
 
 /**
  * Footer component with company info, navigation, and newsletter signup
  */
 function Footer() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async () => {
@@ -18,7 +18,7 @@ function Footer() {
     }
 
     if (!isValidEmail(email)) {
-      alert('Veuillez entrer une adresse email valide.');
+      alert("Veuillez entrer une adresse email valide.");
       return;
     }
 
@@ -28,17 +28,17 @@ function Footer() {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 500));
 
-      alert('Merci pour votre inscription!');
-      setEmail('');
+      alert("Merci pour votre inscription!");
+      setEmail("");
     } catch (error) {
-      alert('Une erreur est survenue. Veuillez réessayer.');
+      alert("Une erreur est survenue. Veuillez réessayer.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       handleSubmit();
     }
   };
@@ -58,7 +58,7 @@ function Footer() {
                 className="social-link"
                 aria-label="Visit our Facebook page"
               >
-                <FaFacebook size={20} />
+                <FaFacebook size={100} />
               </a>
               <a
                 href={SOCIAL_LINKS.INSTAGRAM}
@@ -67,7 +67,7 @@ function Footer() {
                 className="social-link"
                 aria-label="Visit our Instagram page"
               >
-                <FaInstagram size={20} />
+                <FaInstagram size={100} />
               </a>
             </div>
           </div>
@@ -89,14 +89,20 @@ function Footer() {
             <h3 className="section-title">Contact</h3>
             <ul className="contact-list">
               <li>
-                Email:{' '}
-                <a href={`mailto:${COMPANY_INFO.EMAIL}`} className="contact-link">
+                Email:{" "}
+                <a
+                  href={`mailto:${COMPANY_INFO.EMAIL}`}
+                  className="contact-link"
+                >
                   {COMPANY_INFO.EMAIL}
                 </a>
               </li>
               <li>
-                Tél:{' '}
-                <a href={`tel:${COMPANY_INFO.PHONE.replace(/\s/g, '')}`} className="contact-link">
+                Tél:{" "}
+                <a
+                  href={`tel:${COMPANY_INFO.PHONE.replace(/\s/g, "")}`}
+                  className="contact-link"
+                >
                   {COMPANY_INFO.PHONE}
                 </a>
               </li>
@@ -134,7 +140,8 @@ function Footer() {
 
         <div className="footer-bottom">
           <p className="copyright">
-            © {COMPANY_INFO.COPYRIGHT_YEAR} {COMPANY_INFO.NAME}. Tous droits réservés.
+            © {COMPANY_INFO.COPYRIGHT_YEAR} {COMPANY_INFO.NAME}. Tous droits
+            réservés.
           </p>
         </div>
       </div>
