@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import emailjs from "emailjs-com";
 import "../styles/contact.css";
 
 export default function ContactForm() {
@@ -9,7 +10,9 @@ export default function ContactForm() {
     subject: "",
     message: "",
   });
+
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,22 +24,54 @@ export default function ContactForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (formData.name && formData.email && formData.message) {
-      setSubmitted(true);
-      setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
-      setTimeout(() => setSubmitted(false), 3000);
+    setError(false);
+
+    if (!formData.name || !formData.email || !formData.message) {
+      setError(true);
+      return;
     }
+
+    emailjs
+      .send(
+        "service_qvou8fu",
+        "template_930wrjx",
+        formData,
+        "TKvxcyNi9ZkOUPm03"
+      )
+      .then(
+        () => {
+          setSubmitted(true);
+          setFormData({
+            name: "",
+            email: "",
+            phone: "",
+            subject: "",
+            message: "",
+          });
+          setTimeout(() => setSubmitted(false), 3000);
+        },
+        (err) => {
+          console.error(err);
+          setError(true);
+        }
+      );
   };
 
   return (
     <section className="contact-form-card">
       <div className="form-header">
         <h2>Envoyez-nous un message</h2>
-        <p>Nous vous répondrons dans les 24 heures</p>
+        <p>Donnez nous votre avis, posez vos questions, suggestion..etc </p>
       </div>
 
       {submitted && (
-        <div className="success-message">✓ Message envoyé avec succès!</div>
+        <div className="success-message">✓ Message envoyé avec succès !</div>
+      )}
+
+      {error && (
+        <div className="error-message">
+          Une erreur est survenue. Veuillez réessayer.
+        </div>
       )}
 
       <form className="contact-form" onSubmit={handleSubmit}>
@@ -50,31 +85,6 @@ export default function ContactForm() {
             onChange={handleChange}
             placeholder="Votre nom"
             required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="email">Email *</label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="votre.email@exemple.com"
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="phone">Téléphone</label>
-          <input
-            id="phone"
-            type="tel"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            placeholder="+213 XXX XXX XXX"
           />
         </div>
 
@@ -98,7 +108,7 @@ export default function ContactForm() {
             value={formData.message}
             onChange={handleChange}
             rows="5"
-            placeholder="Votre message..."
+            placeholder="Votre message"
             required
           />
         </div>
