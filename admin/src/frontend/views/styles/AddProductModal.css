@@ -1,24 +1,24 @@
-/* Modal overlay and modal window styles */
+/* Basic modal styling aligned with AdminPanel look */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  z-index: 500;
 }
 
 .modal {
-  width: 560px;
-  max-height: 86vh;
   background: #fff;
   border-radius: 10px;
+  width: 95%;
+  max-width: 560px;
+  max-height: 86vh;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.16);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  font-family: inherit;
 }
 
 .modal-header {
@@ -26,36 +26,71 @@
   align-items: center;
   justify-content: space-between;
   padding: 16px 20px;
-  background: #f8f8f8;
   border-bottom: 1px solid #eee;
   position: sticky;
   top: 0;
   z-index: 1;
+  background: #fff;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.close-btn {
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  cursor: pointer;
 }
 
 .modal-body {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: 12px;
+  padding: 16px 20px;
   overflow-y: auto;
-  flex: 1 1 auto;
+  /* allow body to take remaining space so footer sits at the end */
+  grid-auto-rows: min-content;
 }
 
 .modal-body label {
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: 6px;
+  font-size: 14px;
+}
+
+.modal-body input {
+  height: 38px;
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
 }
 
 .modal-footer {
-  padding: 12px 20px;
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
+  gap: 8px;
+  padding: 16px 20px;
   border-top: 1px solid #eee;
-  background: #ffffff;
+  background: #fff;
   /* footer follows content at the end of the modal */
+}
+
+.btn-secondary {
+  border: 1px solid #d44c59;
+  background: transparent;
+  color: #d44c59;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.btn-secondary:hover {
+  background: #ffe5e9;
+}
+.btn-secondary:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(212, 76, 89, 0.18);
 }
 
 .btn-primary {
@@ -63,8 +98,8 @@
   background: #d44c59;
   color: #fff;
   padding: 8px 14px;
-  cursor: pointer;
   border-radius: 6px;
+  cursor: pointer;
   transition: background 160ms ease, box-shadow 160ms ease;
 }
 .btn-primary:hover {
@@ -139,29 +174,6 @@
   cursor: pointer;
   font-size: 16px;
   line-height: 1;
-}
-
-.btn-secondary {
-  border: 1px solid #d44c59;
-  background: transparent;
-  color: #d44c59;
-  padding: 8px 14px;
-  cursor: pointer;
-  border-radius: 6px;
-}
-.btn-secondary:hover {
-  background: #ffe5e9;
-}
-.btn-secondary:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(212, 76, 89, 0.18);
-}
-
-.close-btn {
-  background: transparent;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
 }
 
 /* Responsive small screens */

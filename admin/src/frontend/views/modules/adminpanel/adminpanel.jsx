@@ -25,6 +25,7 @@ export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState("commandes");
   const [orders, setOrders] = useState(initialOrders);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const [statusFilter, setStatusFilter] = useState("all");
 
   const { logout } = useAdminAuth();
   const navigate = useNavigate();
@@ -58,6 +59,18 @@ export default function AdminPanel() {
   const handleViewAsUser = () => {
     window.location.href = "/userview";
   };
+
+  const filteredOrders =
+    statusFilter === "all"
+      ? orders
+      : orders.filter((order) => {
+          const status = order.status.toLowerCase();
+          if (statusFilter === "en attente") return status === "en attente";
+          if (statusFilter === "en cours") return status === "en cours";
+          if (statusFilter === "livrée") return status === "livrée";
+          if (statusFilter === "retour") return status === "retour";
+          return true;
+        });
 
   return (
     <div className="app-root">
@@ -137,10 +150,54 @@ export default function AdminPanel() {
           <div className="panel">
             {activeTab === "commandes" && (
               <>
-                <h2 className="panel-title">Demandes de Commande</h2>
+                <div className="commandes-header">
+                  <h2 className="panel-title">Demandes de Commande</h2>
+                  <div className="status-filters">
+                    <button
+                      className={`filter-btn ${
+                        statusFilter === "all" ? "active" : ""
+                      }`}
+                      onClick={() => setStatusFilter("all")}
+                    >
+                      Toutes
+                    </button>
+                    <button
+                      className={`filter-btn ${
+                        statusFilter === "en attente" ? "active" : ""
+                      }`}
+                      onClick={() => setStatusFilter("en attente")}
+                    >
+                      En attente
+                    </button>
+                    <button
+                      className={`filter-btn ${
+                        statusFilter === "en cours" ? "active" : ""
+                      }`}
+                      onClick={() => setStatusFilter("en cours")}
+                    >
+                      En cours
+                    </button>
+                    <button
+                      className={`filter-btn ${
+                        statusFilter === "livrée" ? "active" : ""
+                      }`}
+                      onClick={() => setStatusFilter("livrée")}
+                    >
+                      Livrée
+                    </button>
+                    <button
+                      className={`filter-btn ${
+                        statusFilter === "retour" ? "active" : ""
+                      }`}
+                      onClick={() => setStatusFilter("retour")}
+                    >
+                      Retour
+                    </button>
+                  </div>
+                </div>
 
                 <div className="panel-content">
-                  {orders.map((o) => (
+                  {filteredOrders.map((o) => (
                     <OrderCard
                       key={o.id}
                       order={o}

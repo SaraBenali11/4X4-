@@ -1,41 +1,41 @@
-import React, { useState } from 'react';
-import ProductCard from '../components/ProductCard';
-import '../styles/createoutfits.css';
-import Header from '../components/header';
-import Footer from '../components/footer';
-import image1 from '../../assets/images/image.png';
-import image2 from '../../assets/images/img2.png';
-import image3 from '../../assets/images/img3.png';
+import React, { useState } from "react";
+import ProductCard from "../components/ProductCard";
+import "../styles/createoutfits.css";
+import Header from "../components/header";
+import Footer from "../components/footer";
+import image1 from "../../assets/images/image.png";
+import image2 from "../../assets/images/img2.png";
+import image3 from "../../assets/images/img3.png";
 
-// Sample products data
+// Sample products data for testing
 const productsData = [
   {
     id: 1,
     image: image1,
-    name: 'Abaya Élégante Beige',
-    category: 'Abaya',
+    name: "Abaya Élégante Beige",
+    category: "Abaya",
     price: 8500,
   },
   {
     id: 2,
     image: image2,
-    name: 'Robe Longue Crème',
-    category: 'Robes',
+    name: "Robe Longue Crème",
+    category: "Robes",
     price: 6500,
   },
   {
     id: 3,
     image: image3,
-    name: 'Ensemble Chic Nude',
-    category: 'Ensembles',
+    name: "Ensemble Chic Nude",
+    category: "Ensembles",
     price: 7200,
   },
 ];
 
 function OutfitCreator() {
   const [selectedProducts, setSelectedProducts] = useState([]);
-  const [outfitName, setOutfitName] = useState('');
-  const [userName, setUserName] = useState('');
+  const [outfitName, setOutfitName] = useState("");
+  const [userName, setUserName] = useState("");
 
   const handleProductClick = (product) => {
     const isSelected = selectedProducts.some((p) => p.id === product.id);
@@ -53,13 +53,15 @@ function OutfitCreator() {
 
   const handleSubmit = () => {
     if (selectedProducts.length === 0 || !outfitName || !userName) {
-      alert('Veuillez remplir tous les champs et sélectionner au moins un produit.');
+      alert(
+        "Veuillez remplir tous les champs et sélectionner au moins un produit."
+      );
       return;
     }
 
     // Outfit submitted - in production, send to backend or analytics
 
-    alert('Votre tenue a été soumise avec succès!');
+    alert("Votre tenue a été soumise avec succès!");
   };
 
   const isProductSelected = (productId) => {
@@ -76,8 +78,8 @@ function OutfitCreator() {
             <div className="outfit-left">
               <h1 className="outfit-main-title">Créateur de Tenues</h1>
               <p className="outfit-subtitle">
-                Sélectionnez des produits pour créer votre look unique et inspirez d'autres
-                clientes!
+                Sélectionnez des produits pour créer votre look unique et
+                inspirez d'autres clientes!
               </p>
 
               <h2 className="section-title">Sélectionnez les Produits</h2>
@@ -87,7 +89,7 @@ function OutfitCreator() {
                   <div
                     key={product.id}
                     className={`product-card-container ${
-                      isProductSelected(product.id) ? 'selected' : ''
+                      isProductSelected(product.id) ? "selected" : ""
                     }`}
                     onClick={() => handleProductClick(product)}
                   >
@@ -134,7 +136,9 @@ function OutfitCreator() {
                   {selectedProducts.map((product) => (
                     <div key={product.id} className="selected-product-item">
                       <img src={product.image} alt={product.name} />
-                      <span className="selected-product-name">{product.name}</span>
+                      <span className="selected-product-name">
+                        {product.name}
+                      </span>
                       <button
                         className="remove-btn"
                         onClick={() => handleRemoveProduct(product.id)}
@@ -193,7 +197,9 @@ function OutfitCreator() {
                 <button
                   className="submit-outfit-btn"
                   onClick={handleSubmit}
-                  disabled={selectedProducts.length === 0 || !outfitName || !userName}
+                  disabled={
+                    selectedProducts.length === 0 || !outfitName || !userName
+                  }
                 >
                   Soumettre la Tenue
                 </button>

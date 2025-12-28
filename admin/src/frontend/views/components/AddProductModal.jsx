@@ -18,8 +18,6 @@ export default function AddProductModal({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // In production, this should call backend API to add product.
-    // For now, it just closes the modal.
     const payload = {
       name,
       category,
@@ -31,7 +29,6 @@ export default function AddProductModal({
     onSave(payload);
   };
 
-  // Prefill when editing
   useEffect(() => {
     if (product) {
       setName(product.name || product.produit || "");
@@ -64,10 +61,12 @@ export default function AddProductModal({
   }, [product]);
 
   return (
-    <div className="modal-overlay">
-      <div className="modal">
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal" onClick={(e) => e.stopPropagation()}>
         <header className="modal-header">
-          <h3>Ajouter un nouveau produit</h3>
+          <h3>
+            {product ? "Modifier le produit" : "Ajouter un nouveau produit"}
+          </h3>
           <button className="close-btn" onClick={onClose} aria-label="Fermer">
             ✖
           </button>
