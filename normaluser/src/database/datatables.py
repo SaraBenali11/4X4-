@@ -1,5 +1,5 @@
 import os
-from .models import db, Product
+from .models.models import db, Product
 from .data import sample_products
 
 

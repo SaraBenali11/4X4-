@@ -42,7 +42,7 @@ def run_create_tables_via_app():
     """
     try:
         # Import the app late to avoid import cycles at top-level
-        from app import app  # noqa: E402
+        from admin.src.backend.app import app  # noqa: E402
         from database.datatables import create_tables  # noqa: E402
 
         create_tables(app)

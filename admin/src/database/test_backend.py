@@ -126,7 +126,7 @@ def test_flask_app():
     try:
         # Force the app to use the test DB URL if specified
         os.environ['DATABASE_URL'] = os.getenv('DATABASE_URL', 'sqlite:///:memory:')
-        from app import app
+        from admin.src.backend.app import app
         print("✓ Flask app imported successfully")
         
         # Test if routes are registered
@@ -154,8 +154,8 @@ def test_orm_models():
     try:
         # Ensure the test DB is used before importing the app
         os.environ['DATABASE_URL'] = os.getenv('DATABASE_URL', 'sqlite:///:memory:')
-        from app import app
-        from database.models import db, Product
+        from admin.src.backend.app import app
+        from admin.src.database.models.models import db, Product
         # Ensure tables are created in the test DB
         from database.datatables import create_tables
         create_tables(app)
@@ -193,7 +193,7 @@ def test_admin_seed_edit_endpoint():
     try:
         import os
         os.environ['ADMIN_API_TOKEN'] = os.getenv('ADMIN_API_TOKEN', 'test-token')
-        from app import app
+        from admin.src.backend.app import app
         repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
         with app.test_client() as client:
             # Set header token to a configured test token or the env's ADMIN_API_TOKEN if not

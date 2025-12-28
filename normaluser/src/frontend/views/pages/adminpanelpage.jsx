@@ -1,16 +1,19 @@
-import Footer from '../components/footer';
-import Header from '../components/header';
-import AdminPanel from '../components/AdminPanel';
+import Footer from "../components/footer";
+import Header from "../components/header";
+// import AdminPanel from '../components/AdminPanel';
 /**
- * Homepage component
- * Main landing page with carousel, new products, and reviews
+ * Admin panel page - redirects to admin folder
+ * Note: Admin panel is in separate admin folder
  */
 function Adminpanelpage() {
   return (
     <div className="homepage">
       <Header />
       <main>
-        <AdminPanel />
+        <div style={{ textAlign: "center", padding: "3rem" }}>
+          <h1>Admin Panel</h1>
+          <p>Please use the admin application for administrative functions.</p>
+        </div>
       </main>
       <Footer />
     </div>

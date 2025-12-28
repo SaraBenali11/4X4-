@@ -1,16 +1,19 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import '../styles/ImageCarousel.css';
-import { carouselSlides } from '../../../database/data/mockData';
-import { CAROUSEL_CONFIG } from '../../config/constants';
-import { useCarousel } from '../../hooks/useCarousel';
-import { useKeyboardNavigation } from '../../hooks/useKeyboardNavigation';
+import React from "react";
+import PropTypes from "prop-types";
+import "../styles/ImageCarousel.css";
+import { carouselSlides } from "../../../database/data/mockData";
+import { CAROUSEL_CONFIG } from "../../config/constants";
+import { useCarousel } from "../../hooks/useCarousel";
+import { useKeyboardNavigation } from "../../hooks/useKeyboardNavigation";
 
 /**
  * Image carousel component with auto-play and manual navigation
  * Features smooth transitions and keyboard navigation support
  */
-function ImageCarousel({ autoPlay = true, interval = CAROUSEL_CONFIG.AUTO_PLAY_INTERVAL }) {
+function ImageCarousel({
+  autoPlay = true,
+  interval = CAROUSEL_CONFIG.AUTO_PLAY_INTERVAL,
+}) {
   const totalSlides = carouselSlides.length;
   const { currentIndex, goToNext, goToPrevious, goToSlide } = useCarousel(
     totalSlides,
@@ -35,9 +38,6 @@ function ImageCarousel({ autoPlay = true, interval = CAROUSEL_CONFIG.AUTO_PLAY_I
         <div className="image-overlay">
           <p className="image-subtitle">{currentSlide.subtitle}</p>
           <h2 className="image-title">{currentSlide.title}</h2>
-          <button className="discover-btn" aria-label="Discover collection">
-            Découvrir →
-          </button>
         </div>
 
         <button
@@ -46,15 +46,17 @@ function ImageCarousel({ autoPlay = true, interval = CAROUSEL_CONFIG.AUTO_PLAY_I
           aria-label="Previous slide"
         >
           <svg
-            width="24"
-            height="24"
+            width="20"
+            height="20"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            strokeWidth="2"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             aria-hidden="true"
           >
-            <path d="M15 18l-6-6 6-6" />
+            <polyline points="14 18 8 12 14 6" />
           </svg>
         </button>
 
@@ -64,24 +66,30 @@ function ImageCarousel({ autoPlay = true, interval = CAROUSEL_CONFIG.AUTO_PLAY_I
           aria-label="Next slide"
         >
           <svg
-            width="24"
-            height="24"
+            width="20"
+            height="20"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            strokeWidth="2"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             aria-hidden="true"
           >
-            <path d="M9 18l6-6-6-6" />
+            <polyline points="10 6 16 12 10 18" />
           </svg>
         </button>
 
-        <div className="carousel-indicators" role="tablist" aria-label="Carousel navigation">
+        <div
+          className="carousel-indicators"
+          role="tablist"
+          aria-label="Carousel navigation"
+        >
           {carouselSlides.map((slide, index) => (
             <button
               key={slide.id}
               onClick={() => goToSlide(index)}
-              className={`indicator ${index === currentIndex ? 'active' : ''}`}
+              className={`indicator ${index === currentIndex ? "active" : ""}`}
               role="tab"
               aria-selected={index === currentIndex}
               aria-label={`Go to slide ${index + 1}`}

@@ -15,9 +15,9 @@ export const footerLinks = {
   navigation: [
     { href: "/", label: "Accueil" },
     { href: "/produits", label: "Produits" },
-    { href: "/a-propos", label: "À propos" },
+    { href: "/outfits", label: "Tenues" },
+    { href: "/inspiration", label: "Inspiration" },
     { href: "/contact-us", label: "Contact" },
-    { href: "/faq", label: "FAQ" },
   ],
 };
 

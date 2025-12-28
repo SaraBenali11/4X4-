@@ -11,7 +11,7 @@ import os
 sys.path.insert(0, os.getcwd())
 
 try:
-    from app import app
+    from admin.src.backend.app import app
     routes = [str(rule) for rule in app.url_map.iter_rules()]
     print("Detected routes:")
     for r in routes:

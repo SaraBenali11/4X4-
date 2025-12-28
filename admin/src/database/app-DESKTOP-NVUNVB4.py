@@ -34,7 +34,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL') or (
 )
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-from database.models import db, Product
+from admin.src.database.models.models import db, Product
 # Initialize ORM with the app
 db.init_app(app)
 

@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
-import PropTypes from "prop-types";
-import "../styles/ProductDetail.css";
 import { CartContext } from "../../context/CartContext";
 import { FavoritesContext } from "../../context/FavoritesContext";
+import PropTypes from "prop-types";
+import "../styles/ProductDetail.css";
 
 // ProductDetail Component
 const ProductDetail = ({ product, onBack }) => {

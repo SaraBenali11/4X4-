@@ -1,6 +1,6 @@
 import os
-from .models import db, Product
-from .data import sample_products
+from .models.models import db, Product
+from .data.dummycheck.data import sample_products
 
 
 def create_tables(app, seed=True):

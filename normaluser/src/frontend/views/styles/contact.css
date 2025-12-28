@@ -1,6 +1,6 @@
 /* Contact Page Styles */
 :root {
-  --primary-color: #8b7355;
+  --primary-color: #8d7773;
   --primary-light: #a8917a;
   --primary-dark: #6b5344;
   --bg-light: #faf8f6;
@@ -11,34 +11,34 @@
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
   --radius: 12px;
+  --accent-1: #8d7773;
+  --muted: #999;
 }
 
 /* Main Contact Page Layout */
 .contact-page {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 60px 20px;
-  background: linear-gradient(135deg, #faf8f6 0%, #f5f1ed 100%);
-  min-height: 100vh;
+  width: 100%;
+  padding: 80px 8%;
+  background: linear-gradient(135deg, #fdfbf9 0%, #f9f5f1 100%);
+  min-height: calc(100vh - 200px);
 }
 
 .contact-title {
-  font-size: 2.5rem;
+  font-family: "Playfair Display", serif;
+  font-size: 2.8rem;
   font-weight: 700;
   text-align: center;
-  color: var(--text-dark);
-  margin-bottom: 15px;
+  color: var(--accent-1);
+  margin-bottom: 12px;
   letter-spacing: -0.5px;
 }
 
 .contact-subtitle {
+  font-family: "Lato", sans-serif;
   font-size: 1.1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.5rem;
+  text-align: center;
   color: var(--text-light);
-  margin-bottom: 50px;
+  margin-bottom: 60px;
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
@@ -47,45 +47,55 @@
 /* Contact Grid */
 .contact-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.2fr 1fr;
   gap: 40px;
   align-items: start;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 968px) {
   .contact-grid {
     grid-template-columns: 1fr;
     gap: 30px;
+  }
+
+  .contact-page {
+    padding: 60px 5%;
+  }
+
+  .contact-title {
+    font-size: 2.2rem;
   }
 }
 
 /* Contact Form Card */
 .contact-form-card {
   background: white;
-  border-radius: var(--radius);
-  padding: 40px;
-  box-shadow: var(--shadow-md);
-  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  padding: 45px;
+  box-shadow: 0 10px 30px rgba(141, 119, 115, 0.08);
+  border: 1px solid rgba(141, 119, 115, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .contact-form-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(139, 115, 85, 0.15);
+  box-shadow: 0 15px 40px rgba(141, 119, 115, 0.12);
 }
 
 .form-header {
-  margin-bottom: 30px;
+  margin-bottom: 35px;
 }
 
 .form-header h2 {
-  font-size: 1.8rem;
+  font-family: "Playfair Display", serif;
+  font-size: 2rem;
   font-weight: 600;
-  color: var(--text-dark);
-  margin-bottom: 8px;
+  color: var(--accent-1);
+  margin-bottom: 10px;
 }
 
 .form-header p {
+  font-family: "Lato", sans-serif;
   color: var(--text-light);
   font-size: 0.95rem;
 }
@@ -128,19 +138,20 @@
 }
 
 .form-group label {
+  font-family: "Lato", sans-serif;
   font-weight: 600;
-  color: var(--text-dark);
+  color: var(--accent-1);
   margin-bottom: 8px;
   font-size: 0.95rem;
 }
 
 .form-group input,
 .form-group textarea {
-  padding: 12px 14px;
-  border: 2px solid var(--border-color);
-  border-radius: 8px;
+  padding: 14px 16px;
+  border: 2px solid rgba(141, 119, 115, 0.15);
+  border-radius: 10px;
   font-size: 0.95rem;
-  font-family: inherit;
+  font-family: "Lato", sans-serif;
   transition: all 0.3s ease;
   background-color: #fafaf9;
 }
@@ -148,37 +159,37 @@
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: var(--primary-color);
+  border-color: var(--accent-1);
   background-color: white;
-  box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.1);
+  box-shadow: 0 0 0 4px rgba(141, 119, 115, 0.08);
 }
 
 .form-group textarea {
   resize: vertical;
-  min-height: 120px;
+  min-height: 140px;
+  line-height: 1.6;
 }
 
 .btn-submit {
-  background: linear-gradient(
-    135deg,
-    var(--primary-color) 0%,
-    var(--primary-light) 100%
-  );
+  background: linear-gradient(135deg, #8d7773 0%, #a89288 100%);
   color: white;
   border: none;
-  padding: 14px 28px;
-  border-radius: 8px;
+  padding: 16px 32px;
+  border-radius: 10px;
   font-size: 1rem;
   font-weight: 600;
+  font-family: "Lato", sans-serif;
   cursor: pointer;
   transition: all 0.3s ease;
   margin-top: 10px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 12px rgba(141, 119, 115, 0.2);
+  width: 100%;
 }
 
 .btn-submit:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(139, 115, 85, 0.25);
+  box-shadow: 0 8px 20px rgba(141, 119, 115, 0.3);
+  background: linear-gradient(135deg, #7d6763 0%, #988278 100%);
 }
 
 .btn-submit:active {
@@ -188,24 +199,34 @@
 /* Contact Info Card */
 .contact-info-card {
   background: white;
-  border-radius: var(--radius);
+  border-radius: 18px;
   padding: 40px;
-  box-shadow: var(--shadow-md);
-  border: 1px solid var(--border-color);
+  box-shadow: 0 10px 30px rgba(141, 119, 115, 0.08);
+  border: 1px solid rgba(141, 119, 115, 0.1);
 }
 
 .info-header {
   margin-bottom: 35px;
 }
 
+.info-header h3 {
+  font-family: "Playfair Display", serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--accent-1);
+  margin-bottom: 8px;
+}
+
 .info-header h2 {
+  font-family: "Playfair Display", serif;
   font-size: 1.8rem;
   font-weight: 600;
-  color: var(--text-dark);
+  color: var(--accent-1);
   margin-bottom: 8px;
 }
 
 .info-header p {
+  font-family: "Lato", sans-serif;
   color: var(--text-light);
   font-size: 0.95rem;
 }
@@ -221,12 +242,12 @@
   gap: 15px;
   padding: 20px;
   background: #fafaf9;
-  border-radius: 10px;
+  border-radius: 12px;
   transition: all 0.3s ease;
 }
 
 .info-item:hover {
-  background: #f5f1ed;
+  background: rgba(141, 119, 115, 0.05);
   transform: translateX(4px);
 }
 
@@ -238,8 +259,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(139, 115, 85, 0.1);
-  border-radius: 8px;
+  background: rgba(141, 119, 115, 0.1);
+  border-radius: 10px;
+  color: var(--accent-1);
 }
 
 .info-content {
@@ -247,20 +269,22 @@
 }
 
 .info-content h3 {
+  font-family: "Lato", sans-serif;
   font-size: 1rem;
   font-weight: 600;
-  color: var(--text-dark);
+  color: var(--accent-1);
   margin-bottom: 6px;
 }
 
 .info-content p {
+  font-family: "Lato", sans-serif;
   color: var(--text-light);
   font-size: 0.9rem;
   line-height: 1.5;
 }
 
 .info-content a {
-  color: var(--primary-color);
+  color: var(--accent-1);
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease;
@@ -274,10 +298,10 @@
 /* Follow Us Card */
 .follow-us-card {
   background: white;
-  border-radius: var(--radius);
+  border-radius: 18px;
   padding: 40px;
-  box-shadow: var(--shadow-md);
-  border: 1px solid var(--border-color);
+  box-shadow: 0 10px 30px rgba(141, 119, 115, 0.08);
+  border: 1px solid rgba(141, 119, 115, 0.1);
   text-align: center;
 }
 
@@ -286,13 +310,15 @@
 }
 
 .follow-header h2 {
+  font-family: "Playfair Display", serif;
   font-size: 1.8rem;
   font-weight: 600;
-  color: var(--text-dark);
+  color: var(--accent-1);
   margin-bottom: 8px;
 }
 
 .follow-header p {
+  font-family: "Lato", sans-serif;
   color: var(--text-light);
   font-size: 0.95rem;
 }
@@ -310,18 +336,19 @@
   align-items: center;
   gap: 8px;
   padding: 12px 20px;
-  border: 2px solid var(--border-color);
-  border-radius: 8px;
+  border: 2px solid rgba(141, 119, 115, 0.2);
+  border-radius: 10px;
   text-decoration: none;
+  font-family: "Lato", sans-serif;
   font-weight: 500;
   color: var(--text-dark);
   transition: all 0.3s ease;
 }
 
 .social-link:hover {
-  border-color: var(--primary-color);
-  background: rgba(139, 115, 85, 0.05);
-  color: var(--primary-color);
+  border-color: var(--accent-1);
+  background: rgba(141, 119, 115, 0.05);
+  color: var(--accent-1);
   transform: translateY(-2px);
 }
 
@@ -348,13 +375,15 @@
 }
 
 .company-bio h3 {
+  font-family: "Playfair Display", serif;
   font-size: 1.2rem;
   font-weight: 600;
-  color: var(--text-dark);
+  color: var(--accent-1);
   margin-bottom: 8px;
 }
 
 .company-bio p {
+  font-family: "Lato", sans-serif;
   color: var(--text-light);
   font-size: 0.9rem;
   line-height: 1.6;

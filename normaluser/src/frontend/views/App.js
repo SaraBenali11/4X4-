@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { CartProvider } from "../context/CartContext";
 import { FavoritesProvider } from "../context/FavoritesContext";
-import { useToast, ToastContainer } from "../components/Toast";
+import { useToast, ToastContainer } from "./components/Toast";
 import Homepage from "./pages/homepage";
 import Adminpanelpage from "./pages/adminpanelpage";
 import OutfitInspiration from "./pages/inspiration";

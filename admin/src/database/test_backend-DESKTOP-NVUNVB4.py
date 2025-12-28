@@ -112,7 +112,7 @@ def test_flask_app():
     print("\nTesting Flask application...")
     
     try:
-        from app import app
+        from admin.src.backend.app import app
         print("✓ Flask app imported successfully")
         
         # Test if routes are registered
@@ -138,8 +138,8 @@ def test_orm_models():
     """Test if SQLAlchemy models and DB are usable via the app context"""
     print("\nTesting ORM & SQLAlchemy models...")
     try:
-        from app import app
-        from database.models import db, Product
+        from admin.src.backend.app import app
+        from admin.src.database.models.models import db, Product
         with app.app_context():
             # Ensure db is bound
             db.session.execute('SELECT 1')

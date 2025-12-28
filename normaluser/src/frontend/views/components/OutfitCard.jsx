@@ -1,11 +1,23 @@
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { FavoritesContext } from "../../context/FavoritesContext";
 import "../styles/ProductCard.css";
 
 const OutfitCard = ({ outfit }) => {
   const navigate = useNavigate();
+  const { isFavorite, toggleFavorite } = useContext(FavoritesContext);
+  const favorited = isFavorite(`outfit-${outfit.id}`);
 
   const handleCardClick = () => {
     navigate(`/outfit/${outfit.id}`);
+  };
+
+  const handleFavoriteClick = (e) => {
+    e.stopPropagation();
+    toggleFavorite(`outfit-${outfit.id}`, {
+      ...outfit,
+      type: "outfit",
+    });
   };
 
   return (
@@ -20,9 +32,12 @@ const OutfitCard = ({ outfit }) => {
     >
       <div className="pcard-image">
         <img src={outfit.image} alt={outfit.title} loading="lazy" />
-        <span className="pcard-badge">Par {outfit.author}</span>
-        <button className="pcard-fav" aria-label="Add to wishlist">
-          ♡
+        <button
+          className="pcard-fav"
+          aria-label="Add to wishlist"
+          onClick={handleFavoriteClick}
+        >
+          {favorited ? "♥" : "♡"}
         </button>
       </div>
 

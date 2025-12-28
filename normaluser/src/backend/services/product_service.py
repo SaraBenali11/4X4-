@@ -1,4 +1,4 @@
-from ..repositories.product_repository import (
+from repositories.product_repository import (
     list_products as repo_list,
     get_product as repo_get,
     add_product as repo_add,

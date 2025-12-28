@@ -1,48 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
 import "../styles/BoubaayaFooter.css";
 import { COMPANY_INFO, SOCIAL_LINKS } from "../../config/constants";
 import { footerLinks } from "../../../database/data/mockData";
-import { isValidEmail } from "../../utils/validators";
+// Newsletter removed per request
 
 /**
  * Footer component with company info, navigation, and newsletter signup
  */
 function Footer() {
-  const [email, setEmail] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleSubmit = async () => {
-    if (!email.trim()) {
-      return;
-    }
-
-    if (!isValidEmail(email)) {
-      alert("Veuillez entrer une adresse email valide.");
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      alert("Merci pour votre inscription!");
-      setEmail("");
-    } catch (error) {
-      alert("Une erreur est survenue. Veuillez réessayer.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      handleSubmit();
-    }
-  };
-
   return (
     <footer className="footer-container">
       <div className="footer-wrapper">
@@ -110,32 +76,7 @@ function Footer() {
             </ul>
           </div>
 
-          <div>
-            <h3 className="section-title">Newsletter</h3>
-            <p className="newsletter-description">
-              Inscrivez-vous pour recevoir nos dernières nouveautés
-            </p>
-            <div className="newsletter-form">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="Votre email"
-                className="newsletter-input"
-                disabled={isSubmitting}
-                aria-label="Email address for newsletter"
-              />
-              <button
-                onClick={handleSubmit}
-                className="newsletter-button"
-                disabled={isSubmitting}
-                aria-label="Subscribe to newsletter"
-              >
-                →
-              </button>
-            </div>
-          </div>
+          {/* Newsletter section removed */}
         </div>
 
         <div className="footer-bottom">

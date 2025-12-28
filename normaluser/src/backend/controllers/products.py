@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from ..services.product_service import (
+from services.product_service import (
     list_products,
     get_product,
     create_product,
