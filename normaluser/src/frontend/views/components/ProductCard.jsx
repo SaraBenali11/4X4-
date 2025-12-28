@@ -6,6 +6,22 @@ import { formatPrice } from "../../utils/formatters";
 import { CartContext } from "../../context/CartContext";
 import { FavoritesContext } from "../../context/FavoritesContext";
 
+// Color mapping for visual display
+const colorMap = {
+  Noir: "#000000",
+  Blanc: "#FFFFFF",
+  Gris: "#808080",
+  Beige: "#F5F5DC",
+  Bleu: "#4169E1",
+  Rouge: "#DC143C",
+  Vert: "#228B22",
+  Jaune: "#FFD700",
+  Rose: "#FFB6C1",
+  Marron: "#8B4513",
+  Orange: "#FF8C00",
+  Violet: "#8B008B",
+};
+
 /**
  * Product card component
  * Displays product information with image, name, category, and pricing
@@ -167,19 +183,30 @@ function ProductCard({
               <h4>
                 Couleur <span className="required">*</span>
               </h4>
-              <div className="color-options">
+              <div className="color-options-circles">
                 {colors.map((color) => (
                   <button
                     key={color}
-                    className={`color-btn ${
+                    className={`color-circle ${
                       selectedColor === color ? "active" : ""
                     }`}
+                    style={{
+                      backgroundColor: colorMap[color] || "#cccccc",
+                      border:
+                        color === "Blanc"
+                          ? "2px solid #e0d9d3"
+                          : "2px solid transparent",
+                    }}
                     onClick={() => {
                       setSelectedColor(color);
                       setError("");
                     }}
+                    title={color}
+                    aria-label={color}
                   >
-                    {color}
+                    {selectedColor === color && (
+                      <span className="check-icon">✓</span>
+                    )}
                   </button>
                 ))}
               </div>

@@ -167,29 +167,38 @@
 /* Color Options */
 .color-options {
   display: flex;
-  gap: 12px;
+  gap: 16px;
   flex-wrap: wrap;
 }
 
-.color-btn {
-  padding: 12px 24px;
-  border: 1px solid #d4c5bd;
-  border-radius: 24px;
-  background: white;
-  color: #8b7355;
-  font-size: 15px;
+.color-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-.color-btn:hover {
-  border-color: #8b7355;
+.color-circle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
-.color-btn.active {
-  background-color: #a89088;
+.color-circle.active {
+  transform: scale(1.15);
+  box-shadow: 0 0 0 3px #8b7355, 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.color-circle .check-icon {
+  font-size: 24px;
+  font-weight: bold;
   color: white;
-  border-color: #a89088;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.8), 0 0 6px rgba(0, 0, 0, 0.6);
 }
 
 /* Features List */

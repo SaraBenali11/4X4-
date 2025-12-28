@@ -5,6 +5,22 @@ import { ShoppingBag } from "lucide-react";
 import PropTypes from "prop-types";
 import "../styles/ProductDetail.css";
 
+// Color mapping for visual display
+const colorMap = {
+  Noir: "#000000",
+  Blanc: "#FFFFFF",
+  Gris: "#808080",
+  Beige: "#F5F5DC",
+  Bleu: "#4169E1",
+  Rouge: "#DC143C",
+  Vert: "#228B22",
+  Jaune: "#FFD700",
+  Rose: "#FFB6C1",
+  Marron: "#8B4513",
+  Orange: "#FF8C00",
+  Violet: "#8B008B",
+};
+
 // ProductDetail Component
 const ProductDetail = ({ product, onBack }) => {
   // Initialize state with null to force user selection
@@ -143,15 +159,26 @@ const ProductDetail = ({ product, onBack }) => {
                 {product.colors.map((color) => (
                   <button
                     key={color}
-                    className={`color-btn ${
+                    className={`color-circle ${
                       selectedColor === color ? "active" : ""
                     }`}
+                    style={{
+                      backgroundColor: colorMap[color] || "#cccccc",
+                      border:
+                        color === "Blanc"
+                          ? "2px solid #d4c5bd"
+                          : "2px solid transparent",
+                    }}
                     onClick={() => {
                       setSelectedColor(color);
                       setError("");
                     }}
+                    title={color}
+                    aria-label={color}
                   >
-                    {color}
+                    {selectedColor === color && (
+                      <span className="check-icon">✓</span>
+                    )}
                   </button>
                 ))}
               </div>
