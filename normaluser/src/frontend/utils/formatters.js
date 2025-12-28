@@ -8,10 +8,15 @@
  * @returns {string} Formatted price string
  */
 export const formatPrice = (price) => {
-  if (typeof price !== 'number' || isNaN(price)) {
-    return '0 DA';
+  if (typeof price !== "number" || isNaN(price)) {
+    return "0 DA";
   }
-  return `${price.toLocaleString('fr-DZ')} DA`;
+  const roundedPrice = Math.round(price);
+  // Format with spaces as thousands separator
+  const formattedPrice = roundedPrice
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  return `${formattedPrice} DA`;
 };
 
 /**
@@ -20,14 +25,14 @@ export const formatPrice = (price) => {
  * @returns {string} Formatted date string
  */
 export const formatDate = (date) => {
-  const dateObj = typeof date === 'string' ? new Date(date) : date;
+  const dateObj = typeof date === "string" ? new Date(date) : date;
   if (!(dateObj instanceof Date) || isNaN(dateObj)) {
-    return '';
+    return "";
   }
-  return dateObj.toLocaleDateString('fr-FR', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+  return dateObj.toLocaleDateString("fr-FR", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
 };
 
@@ -38,9 +43,9 @@ export const formatDate = (date) => {
  */
 export const formatPhone = (phone) => {
   if (!phone) {
-    return '';
+    return "";
   }
-  const cleaned = phone.replace(/\D/g, '');
+  const cleaned = phone.replace(/\D/g, "");
   const match = cleaned.match(/^(\d{4})(\d{2})(\d{2})(\d{2})$/);
   if (match) {
     return `${match[1]} ${match[2]} ${match[3]} ${match[4]}`;

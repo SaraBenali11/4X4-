@@ -72,7 +72,7 @@ export const newProducts = [
     name: "Abaya Élégante Beige",
     category: "Abaya",
     price: 8500,
-    oldPrice: 0,
+    oldPrice: 1,
     isNew: true,
   },
   {

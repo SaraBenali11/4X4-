@@ -4,6 +4,8 @@ import Header from "../components/header";
 import Footer from "../components/footer";
 import { supabase } from "../../config/supabase";
 import { FavoritesContext } from "../../context/FavoritesContext";
+import { CartContext } from "../../context/CartContext";
+import { ShoppingBag } from "lucide-react";
 import "../styles/outfitdetails.css";
 
 export default function OutfitDetailsPage() {
@@ -13,6 +15,7 @@ export default function OutfitDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { isFavorite, toggleFavorite } = useContext(FavoritesContext);
+  const { addToCart } = useContext(CartContext);
 
   const favorited = outfit ? isFavorite(`outfit-${outfit.id}`) : false;
 
@@ -72,11 +75,50 @@ export default function OutfitDetailsPage() {
 
   const handleFavoriteClick = () => {
     if (outfit) {
-      toggleFavorite(`outfit-${outfit.id}`, {
+      toggleFavorite({
+        productId: `outfit-${outfit.id}`,
         ...outfit,
         type: "outfit",
       });
     }
+  };
+
+  const handleAddToCart = () => {
+    if (!outfit || !outfit.products) return;
+
+    outfit.products.forEach((product) => {
+      addToCart({
+        productId: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        size: "M", // Taille par défaut
+        quantity: 1,
+      });
+    });
+
+    alert(
+      `Tous les produits de la tenue "${outfit.title}" ont été ajoutés au panier !`
+    );
+  };
+
+  const handleOrder = () => {
+    if (!outfit || !outfit.products) return;
+
+    // Ajouter tous les produits au panier
+    outfit.products.forEach((product) => {
+      addToCart({
+        productId: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        size: "M", // Taille par défaut
+        quantity: 1,
+      });
+    });
+
+    // Rediriger vers la page de commande/checkout
+    navigate("/cart");
   };
 
   if (loading) {
@@ -151,7 +193,12 @@ export default function OutfitDetailsPage() {
                     <div className="info">
                       <span className="name">{product.name}</span>
                       <span className="price">
-                        {product.price?.toLocaleString()} DA
+                        {product.price
+                          ? Math.round(product.price)
+                              .toString()
+                              .replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+                          : 0}{" "}
+                        DA
                       </span>
                     </div>
                     <button
@@ -177,8 +224,13 @@ export default function OutfitDetailsPage() {
               </div>
 
               <div className="actions">
-                <button className="close" onClick={handleBack}>
-                  Fermer
+                <button
+                  className="btn-add-to-cart"
+                  onClick={handleAddToCart}
+                  title="Ajouter tous les produits au panier"
+                >
+                  <ShoppingBag size={18} />
+                  Ajouter au panier
                 </button>
                 <button
                   className={`fav ${favorited ? "favorited" : ""}`}

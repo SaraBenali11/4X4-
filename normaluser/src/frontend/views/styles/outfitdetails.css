@@ -191,10 +191,12 @@
   gap: 12px;
   margin-top: auto;
   padding-top: 32px;
+  flex-wrap: wrap;
 }
 
 .actions button {
   flex: 1;
+  min-width: 140px;
   padding: 14px 24px;
   border-radius: 12px;
   font-family: "Lato", sans-serif;
@@ -216,19 +218,51 @@
   border-color: #8d7773;
 }
 
-.actions .fav {
-  background: linear-gradient(135deg, #8d7773 0%, #a89288 100%);
+.actions .btn-add-to-cart {
+  background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
   color: white;
-  box-shadow: 0 4px 12px rgba(141, 119, 115, 0.2);
+  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.actions .btn-add-to-cart:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(39, 174, 96, 0.4);
+  background: linear-gradient(135deg, #229954 0%, #1e8449 100%);
+}
+
+.actions .btn-order {
+  background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+}
+
+.actions .btn-order:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(39, 174, 96, 0.4);
+  background: linear-gradient(135deg, #229954 0%, #1e8449 100%);
+}
+
+.actions .fav {
+  background: white;
+  color: #8d7773;
+  border: 2px solid #8d7773;
+  box-shadow: 0 2px 8px rgba(141, 119, 115, 0.1);
 }
 
 .actions .fav:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(141, 119, 115, 0.3);
+  background: #fafaf9;
+  box-shadow: 0 4px 12px rgba(141, 119, 115, 0.2);
 }
 
 .actions .fav.favorited {
-  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  background: white;
+  color: #e74c3c;
+  border: 2px solid #e74c3c;
 }
 
 /* Responsive */

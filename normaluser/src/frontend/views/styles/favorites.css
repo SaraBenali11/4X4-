@@ -82,6 +82,41 @@
   background: #a0938a;
 }
 
+/* Favorites Section */
+.favorites-section {
+  margin-bottom: 60px;
+}
+
+.favorites-section:last-child {
+  margin-bottom: 0;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid rgba(184, 163, 154, 0.2);
+}
+
+.section-header h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 600;
+  font-family: "Playfair Display", serif;
+  color: #5d5a57;
+}
+
+.section-count {
+  font-size: 14px;
+  color: #b8a39a;
+  font-weight: 500;
+  background: rgba(184, 163, 154, 0.1);
+  padding: 6px 16px;
+  border-radius: 20px;
+}
+
 .favorites-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -93,6 +128,10 @@
   .favorites-grid {
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 20px;
+  }
+
+  .section-header h2 {
+    font-size: 1.5rem;
   }
 }
 
@@ -109,6 +148,18 @@
     font-size: 2rem;
   }
 
+  .favorites-section {
+    margin-bottom: 48px;
+  }
+
+  .section-header {
+    margin-bottom: 24px;
+  }
+
+  .section-header h2 {
+    font-size: 1.3rem;
+  }
+
   .favorites-grid {
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 16px;
@@ -122,6 +173,16 @@
 
   .favorites-header h1 {
     font-size: 1.5rem;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .section-header h2 {
+    font-size: 1.2rem;
   }
 
   .favorites-grid {

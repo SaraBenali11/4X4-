@@ -21,13 +21,16 @@ function ProductCard({
   onClick,
 }) {
   const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(null);
   const [showSizeModal, setShowSizeModal] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
   const { addToCart } = useContext(CartContext);
   const { isFavorite, toggleFavorite: toggleFav } =
     useContext(FavoritesContext);
 
   const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
+  const colors = ["Noir", "Blanc", "Gris", "Beige", "Bleu", "Rouge"];
   const favorited = isFavorite(productId);
 
   const toggleFavorite = (e) => {
@@ -54,21 +57,35 @@ function ProductCard({
   const handleAddToCart = (e) => {
     e.stopPropagation();
     setShowSizeModal(true);
+    setSelectedSize(null);
+    setSelectedColor(null);
+    setError("");
   };
 
-  const handleSizeSelect = (size) => {
-    setSelectedSize(size);
+  const handleConfirmSelection = () => {
+    if (!selectedSize) {
+      setError("Veuillez sélectionner une taille");
+      return;
+    }
+    if (!selectedColor) {
+      setError("Veuillez sélectionner une couleur");
+      return;
+    }
+
     addToCart({
       productId,
       name,
       category,
       price,
       image,
-      size,
+      size: selectedSize,
+      color: selectedColor,
       quantity: 1,
     });
     setShowSizeModal(false);
     setSelectedSize(null);
+    setSelectedColor(null);
+    setError("");
   };
 
   return (
@@ -100,7 +117,9 @@ function ProductCard({
 
           <div className="pcard-price">
             <span className="current">{formatPrice(price)}</span>
-            {oldPrice && <span className="old">{formatPrice(oldPrice)}</span>}
+            {typeof oldPrice === "number" && oldPrice > 0 && (
+              <span className="old">{formatPrice(oldPrice)}</span>
+            )}
           </div>
 
           <button
@@ -113,33 +132,75 @@ function ProductCard({
         </div>
       </article>
 
-      {/* Size Selection Modal */}
+      {/* Size and Color Selection Modal */}
       {showSizeModal && (
         <div
           className="size-modal-overlay"
           onClick={() => setShowSizeModal(false)}
         >
           <div className="size-modal" onClick={(e) => e.stopPropagation()}>
-            <h3>Sélectionnez une taille</h3>
-            <div className="size-options">
-              {sizes.map((size) => (
-                <button
-                  key={size}
-                  className={`size-btn ${
-                    selectedSize === size ? "active" : ""
-                  }`}
-                  onClick={() => handleSizeSelect(size)}
-                >
-                  {size}
-                </button>
-              ))}
+            <h3 className="modal-title">Sélectionnez les options</h3>
+
+            <div className="modal-section">
+              <h4>
+                Taille <span className="required">*</span>
+              </h4>
+              <div className="size-options">
+                {sizes.map((size) => (
+                  <button
+                    key={size}
+                    className={`size-btn ${
+                      selectedSize === size ? "active" : ""
+                    }`}
+                    onClick={() => {
+                      setSelectedSize(size);
+                      setError("");
+                    }}
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
             </div>
-            <button
-              className="size-modal-close"
-              onClick={() => setShowSizeModal(false)}
-            >
-              Annuler
-            </button>
+
+            <div className="modal-section">
+              <h4>
+                Couleur <span className="required">*</span>
+              </h4>
+              <div className="color-options">
+                {colors.map((color) => (
+                  <button
+                    key={color}
+                    className={`color-btn ${
+                      selectedColor === color ? "active" : ""
+                    }`}
+                    onClick={() => {
+                      setSelectedColor(color);
+                      setError("");
+                    }}
+                  >
+                    {color}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {error && <div className="modal-error">{error}</div>}
+
+            <div className="modal-actions">
+              <button
+                className="modal-btn modal-cancel"
+                onClick={() => setShowSizeModal(false)}
+              >
+                Annuler
+              </button>
+              <button
+                className="modal-btn modal-confirm"
+                onClick={handleConfirmSelection}
+              >
+                Ajouter au panier
+              </button>
+            </div>
           </div>
         </div>
       )}

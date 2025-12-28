@@ -1,9 +1,29 @@
-import React, { createContext, useState, useCallback } from "react";
+import React, { createContext, useState, useCallback, useEffect } from "react";
 
 export const FavoritesContext = createContext();
 
+const FAVORITES_STORAGE_KEY = "sutraty_favorites";
+
 export function FavoritesProvider({ children }) {
-  const [favorites, setFavorites] = useState([]);
+  // Initialize from localStorage
+  const [favorites, setFavorites] = useState(() => {
+    try {
+      const stored = localStorage.getItem(FAVORITES_STORAGE_KEY);
+      return stored ? JSON.parse(stored) : [];
+    } catch (error) {
+      console.error("Error loading favorites from localStorage:", error);
+      return [];
+    }
+  });
+
+  // Save to localStorage whenever favorites change
+  useEffect(() => {
+    try {
+      localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
+    } catch (error) {
+      console.error("Error saving favorites to localStorage:", error);
+    }
+  }, [favorites]);
 
   const addFavorite = useCallback((product) => {
     setFavorites((prevFavorites) => {

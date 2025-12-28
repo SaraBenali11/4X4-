@@ -75,7 +75,13 @@ function CartItem({ item, onRemove, onQuantityChange }) {
         </div>
       </div>
 
-      <span>{item.price ? `${item.price.toLocaleString()} DA` : "N/A"}</span>
+      <span>
+        {item.price
+          ? `${Math.round(item.price)
+              .toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, " ")} DA`
+          : "N/A"}
+      </span>
 
       <div className="qty">
         <button onClick={() => onQuantityChange(item.quantity - 1)}>-</button>
@@ -86,7 +92,9 @@ function CartItem({ item, onRemove, onQuantityChange }) {
       <div className="row-total">
         <span>
           {item.price
-            ? `${(item.price * item.quantity).toLocaleString()} DA`
+            ? `${Math.round(item.price * item.quantity)
+                .toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, " ")} DA`
             : "N/A"}
         </span>
         <button className="delete" onClick={onRemove}>

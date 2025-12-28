@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { CartProvider } from "../context/CartContext";
 import { FavoritesProvider } from "../context/FavoritesContext";
 import { useToast, ToastContainer } from "./components/Toast";
+import CookieConsent from "./components/CookieConsent";
 import Homepage from "./pages/homepage";
 import Adminpanelpage from "./pages/adminpanelpage";
 import OutfitInspiration from "./pages/inspiration";
@@ -25,6 +26,7 @@ export default function App() {
   return (
     <>
       <ToastContainer toasts={toasts} />
+      <CookieConsent />
       <FavoritesProvider>
         <CartProvider onAddToCart={handleAddToCart}>
           <Router>

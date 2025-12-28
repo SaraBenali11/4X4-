@@ -124,6 +124,12 @@
   margin: 0 0 16px 0;
 }
 
+.detail-section h3 .required {
+  color: #e74c3c;
+  font-weight: 600;
+  margin-left: 4px;
+}
+
 .detail-section p {
   color: #b8a39a;
   line-height: 1.6;
@@ -307,40 +313,84 @@
   outline: none;
 }
 
-.btn-primary:hover {
-  background-color: #a89088;
+/* Error Message */
+.error-message {
+  background: #ffe6e6;
+  border-left: 4px solid #e74c3c;
+  padding: 12px 16px;
+  border-radius: 8px;
+  color: #c0392b;
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 16px;
+  animation: slideIn 0.3s ease;
 }
 
-.button-group {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Product Actions */
+.product-actions {
+  display: flex;
   gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
 }
 
-.btn-secondary {
+.product-actions button {
+  flex: 1;
+  min-width: 180px;
+  padding: 16px 24px;
+  border-radius: 12px;
+  font-family: "Lato", sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.product-actions .btn-add-to-cart {
+  background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 14px;
+}
+
+.product-actions .btn-add-to-cart:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(39, 174, 96, 0.4);
+  background: linear-gradient(135deg, #229954 0%, #1e8449 100%);
+}
+
+.product-actions .btn-favorite {
   background: white;
-  border: 1px solid #d4c5bd;
-  border-radius: 8px;
-  color: #8b7355;
-  font-size: 15px;
-  cursor: pointer;
-  transition: all 0.2s;
+  color: #8d7773;
+  border: 2px solid #8d7773;
+  box-shadow: 0 2px 8px rgba(141, 119, 115, 0.1);
 }
 
-.btn-secondary svg {
-  width: 20px;
-  height: 20px;
-  stroke-width: 2;
+.product-actions .btn-favorite:hover {
+  transform: translateY(-2px);
+  background: #fafaf9;
+  box-shadow: 0 4px 12px rgba(141, 119, 115, 0.2);
 }
 
-.btn-secondary:hover {
-  border-color: #8b7355;
-  background-color: #faf8f7;
+.product-actions .btn-favorite.favorited {
+  background: white;
+  color: #e74c3c;
+  border: 2px solid #e74c3c;
 }
 
 /* Note */

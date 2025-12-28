@@ -14,7 +14,8 @@ const OutfitCard = ({ outfit }) => {
 
   const handleFavoriteClick = (e) => {
     e.stopPropagation();
-    toggleFavorite(`outfit-${outfit.id}`, {
+    toggleFavorite({
+      productId: `outfit-${outfit.id}`,
       ...outfit,
       type: "outfit",
     });
