@@ -4,31 +4,36 @@ from repositories.product_repository import (
     add_product as repo_add,
     delete_product as repo_delete,
     update_product as repo_update,
+    list_categories as repo_list_categories,
+    upload_product_image as repo_upload_image,
 )
 
 
 def list_products():
     products = repo_list()
-    return [p.to_dict() for p in products]
+    return products
 
 
 def get_product(product_id):
     p = repo_get(product_id)
-    return p.to_dict() if p else None
+    return p if p else None
+
+
+def list_categories():
+    return repo_list_categories()
 
 
 def create_product(data):
-    # Basic validation
-    required = ('name', 'category', 'price')
-    for f in required:
-        if f not in data:
-            raise ValueError(f'Missing required field: {f}')
-    # Normalize list fields
-    data['sizes'] = ','.join(data.get('sizes', [])) if isinstance(data.get('sizes', []), (list, tuple)) else data.get('sizes', '')
-    data['colors'] = ','.join(data.get('colors', [])) if isinstance(data.get('colors', []), (list, tuple)) else data.get('colors', '')
-    data['images'] = ','.join(data.get('images', [])) if isinstance(data.get('images', []), (list, tuple)) else data.get('images', '')
+    # Ensure lists are strings if coming from JSON as lists, 
+    # though frontend form data usually sends strings.
+    # The repository expects strings for splitting.
+    if isinstance(data.get('sizes'), list):
+        data['sizes'] = ','.join(data['sizes'])
+    if isinstance(data.get('colors'), list):
+        data['colors'] = ','.join(data['colors'])
+    
     p = repo_add(data)
-    return p.to_dict()
+    return p if p else {}
 
 
 def remove_product(product_id):
@@ -36,5 +41,14 @@ def remove_product(product_id):
 
 
 def update_product(product_id, updates):
+    if isinstance(updates.get('sizes'), list):
+        updates['sizes'] = ','.join(updates['sizes'])
+    if isinstance(updates.get('colors'), list):
+        updates['colors'] = ','.join(updates['colors'])
+
     p = repo_update(product_id, updates)
-    return p.to_dict() if p else None
+    return p if p else None
+
+
+def upload_product_image(file):
+    return repo_upload_image(file)

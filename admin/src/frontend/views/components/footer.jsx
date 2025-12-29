@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaFacebook, FaInstagram } from 'react-icons/fa';
-import '../styles/BoubaayaFooter.css';
+import '../styles/AdminFooter.css';
 import { COMPANY_INFO, SOCIAL_LINKS } from '../../config/constants';
 import { footerLinks } from '../../../database/data/mockData';
 import { isValidEmail } from '../../utils/validators';

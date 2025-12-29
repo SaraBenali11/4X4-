@@ -4,6 +4,8 @@ import Adminpanelpage from "./pages/adminpanelpage";
 import AdminInfo from "./pages/admininfo";
 import AdminLogin from "./components/AdminLogin";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ProductsPage from "./pages/produits";
+import AddProduct from "./pages/AddProduct";
 
 function AppContent() {
   const { isAuthenticated, loading } = useAdminAuth();
@@ -49,6 +51,22 @@ function AppContent() {
           element={
             <ProtectedRoute>
               <AdminInfo />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/products"
+          element={
+            <ProtectedRoute>
+              <ProductsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/add-product"
+          element={
+            <ProtectedRoute>
+              <AddProduct />
             </ProtectedRoute>
           }
         />

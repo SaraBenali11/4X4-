@@ -6,22 +6,6 @@ import { formatPrice } from "../../utils/formatters";
 import { CartContext } from "../../context/CartContext";
 import { FavoritesContext } from "../../context/FavoritesContext";
 
-// Color mapping for visual display
-const colorMap = {
-  Noir: "#000000",
-  Blanc: "#FFFFFF",
-  Gris: "#808080",
-  Beige: "#F5F5DC",
-  Bleu: "#4169E1",
-  Rouge: "#DC143C",
-  Vert: "#228B22",
-  Jaune: "#FFD700",
-  Rose: "#FFB6C1",
-  Marron: "#8B4513",
-  Orange: "#FF8C00",
-  Violet: "#8B008B",
-};
-
 /**
  * Product card component
  * Displays product information with image, name, category, and pricing
@@ -33,20 +17,29 @@ function ProductCard({
   price,
   oldPrice = null,
   isNew = false,
+  status = "new", // Receive raw status
   productId,
   onClick,
 }) {
   const [selectedSize, setSelectedSize] = useState(null);
-  const [selectedColor, setSelectedColor] = useState(null);
   const [showSizeModal, setShowSizeModal] = useState(false);
-  const [error, setError] = useState("");
   const navigate = useNavigate();
   const { addToCart } = useContext(CartContext);
   const { isFavorite, toggleFavorite: toggleFav } =
     useContext(FavoritesContext);
 
+  // Helper to determine badge text
+  const getBadgeText = () => {
+    if (status === 'new' || isNew) return "Nouveau";
+    if (status === 'promo') return "Promo";
+    if (status === 'best_seller') return "Best Seller";
+    if (status === 'out_of_stock') return "Rupture";
+    return null;
+  };
+
+  const badgeText = getBadgeText();
+
   const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
-  const colors = ["Noir", "Blanc", "Gris", "Beige", "Bleu", "Rouge"];
   const favorited = isFavorite(productId);
 
   const toggleFavorite = (e) => {
@@ -73,35 +66,21 @@ function ProductCard({
   const handleAddToCart = (e) => {
     e.stopPropagation();
     setShowSizeModal(true);
-    setSelectedSize(null);
-    setSelectedColor(null);
-    setError("");
   };
 
-  const handleConfirmSelection = () => {
-    if (!selectedSize) {
-      setError("Veuillez sélectionner une taille");
-      return;
-    }
-    if (!selectedColor) {
-      setError("Veuillez sélectionner une couleur");
-      return;
-    }
-
+  const handleSizeSelect = (size) => {
+    setSelectedSize(size);
     addToCart({
       productId,
       name,
       category,
       price,
       image,
-      size: selectedSize,
-      color: selectedColor,
+      size,
       quantity: 1,
     });
     setShowSizeModal(false);
     setSelectedSize(null);
-    setSelectedColor(null);
-    setError("");
   };
 
   return (
@@ -116,7 +95,7 @@ function ProductCard({
         }
       >
         <div className="pcard-image">
-          {isNew && <span className="pcard-badge">Nouveau</span>}
+          {badgeText && <span className="pcard-badge">{badgeText}</span>}
           <img src={image} alt={name} loading="lazy" />
           <button
             className="pcard-fav"
@@ -133,9 +112,7 @@ function ProductCard({
 
           <div className="pcard-price">
             <span className="current">{formatPrice(price)}</span>
-            {typeof oldPrice === "number" && oldPrice > 0 && (
-              <span className="old">{formatPrice(oldPrice)}</span>
-            )}
+            {oldPrice && <span className="old">{formatPrice(oldPrice)}</span>}
           </div>
 
           <button
@@ -148,86 +125,32 @@ function ProductCard({
         </div>
       </article>
 
-      {/* Size and Color Selection Modal */}
+      {/* Size Selection Modal */}
       {showSizeModal && (
         <div
           className="size-modal-overlay"
           onClick={() => setShowSizeModal(false)}
         >
           <div className="size-modal" onClick={(e) => e.stopPropagation()}>
-            <h3 className="modal-title">Sélectionnez les options</h3>
-
-            <div className="modal-section">
-              <h4>
-                Taille <span className="required">*</span>
-              </h4>
-              <div className="size-options">
-                {sizes.map((size) => (
-                  <button
-                    key={size}
-                    className={`size-btn ${
-                      selectedSize === size ? "active" : ""
+            <h3>Sélectionnez une taille</h3>
+            <div className="size-options">
+              {sizes.map((size) => (
+                <button
+                  key={size}
+                  className={`size-btn ${selectedSize === size ? "active" : ""
                     }`}
-                    onClick={() => {
-                      setSelectedSize(size);
-                      setError("");
-                    }}
-                  >
-                    {size}
-                  </button>
-                ))}
-              </div>
+                  onClick={() => handleSizeSelect(size)}
+                >
+                  {size}
+                </button>
+              ))}
             </div>
-
-            <div className="modal-section">
-              <h4>
-                Couleur <span className="required">*</span>
-              </h4>
-              <div className="color-options-circles">
-                {colors.map((color) => (
-                  <button
-                    key={color}
-                    className={`color-circle ${
-                      selectedColor === color ? "active" : ""
-                    }`}
-                    style={{
-                      backgroundColor: colorMap[color] || "#cccccc",
-                      border:
-                        color === "Blanc"
-                          ? "2px solid #e0d9d3"
-                          : "2px solid transparent",
-                    }}
-                    onClick={() => {
-                      setSelectedColor(color);
-                      setError("");
-                    }}
-                    title={color}
-                    aria-label={color}
-                  >
-                    {selectedColor === color && (
-                      <span className="check-icon">✓</span>
-                    )}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {error && <div className="modal-error">{error}</div>}
-
-            <div className="modal-actions">
-              <button
-                className="modal-btn modal-cancel"
-                onClick={() => setShowSizeModal(false)}
-              >
-                Annuler
-              </button>
-              <button
-                className="modal-btn modal-confirm"
-                onClick={handleConfirmSelection}
-              >
-                Ajouter au panier
-              </button>
-            </div>
+            <button
+              className="size-modal-close"
+              onClick={() => setShowSizeModal(false)}
+            >
+              Annuler
+            </button>
           </div>
         </div>
       )}
@@ -242,6 +165,7 @@ ProductCard.propTypes = {
   price: PropTypes.number.isRequired,
   oldPrice: PropTypes.number,
   isNew: PropTypes.bool,
+  status: PropTypes.string,
   productId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onClick: PropTypes.func,
 };

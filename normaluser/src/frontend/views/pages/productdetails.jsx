@@ -1,88 +1,77 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "../components/header";
 import Footer from "../components/footer";
 import ProductDetail from "../components/ProductDetail";
-import { newProducts } from "../../../database/data/mockData";
+import { productService } from "../../services/productService";
 
-// Enhanced products data with additional details for product page
-const productsData = [
-  {
-    id: "p1",
-    image: newProducts[0].image,
-    name: "Abaya Élégante Beige",
-    category: "Abaya",
-    price: 8500,
-    oldPrice: 0,
-    isNew: true,
-    description:
-      "Une abaya élégante en tissu de qualité supérieure, parfaite pour toutes occasions.",
-    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
-    colors: ["Beige", "Noir", "Blanc"],
-    features: [
-      "Tissu de qualité",
-      "Coupe moderne",
-      "Confortable",
-      "Lavable en machine",
-    ],
-    availability: ["Alger Centre", "Oran", "Constantine"],
-  },
-  {
-    id: "p2",
-    image: newProducts[1].image,
-    name: "Pantalon Chic",
-    category: "Pantalon",
-    price: 4200,
-    oldPrice: 0,
-    isNew: true,
-    description: "Pantalon chic avec une coupe moderne et confortable.",
-    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
-    colors: ["Noir", "Beige", "Gris"],
-    features: ["Coupe moderne", "Confortable", "Tissu premium", "Polyvalent"],
-    availability: ["Alger Centre", "Oran", "Constantine"],
-  },
-  {
-    id: "p3",
-    image: newProducts[2].image,
-    name: "T-shirt Bleu",
-    category: "Haut",
-    price: 1200,
-    oldPrice: 0,
-    isNew: false,
-    description:
-      "T-shirt bleu de qualité supérieure, confortable pour le quotidien.",
-    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
-    colors: ["Bleu", "Blanc", "Noir"],
-    features: [
-      "Tissu respirant",
-      "Coupe ajustée",
-      "Lavable en machine",
-      "Confortable",
-    ],
-    availability: ["Alger Centre", "Oran", "Constantine"],
-  },
-];
-
-/**
- * Product detail page component
- * Displays detailed information about a specific product
- */
 function Productdetpage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Find the product by ID (id is a string like "p1", "p2", etc.)
-  const product = productsData.find((p) => p.id === id);
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setLoading(true);
+        const data = await productService.getProduct(id);
+
+        if (data) {
+          // Transform data to match ProductDetail component expectations
+          const firstImage = data.product_images && data.product_images.length > 0
+            ? data.product_images[0].image_url
+            : 'https://via.placeholder.com/300';
+
+          const transformed = {
+            id: data.id,
+            name: data.name,
+            category: data.categories?.name || data.category || "Catégorie",
+            price: data.promo_price || data.price,
+            oldPrice: data.promo_price ? data.price : null,
+            description: data.description || "Aucune description disponible.",
+            image: firstImage,
+            images: data.product_images?.map(img => img.image_url) || [firstImage],
+            sizes: data.product_sizes?.map(s => s.size) || [],
+            colors: data.product_colors?.map(c => c.color) || [],
+            isNew: data.status === 'new' || data.is_new,
+            status: data.status,
+            features: [
+              "Tissu de haute qualité",
+              "Coupe élégante et confortable",
+              "Facile d'entretien",
+              "Design moderne"
+            ]
+          };
+          setProduct(transformed);
+        }
+      } catch (error) {
+        console.error("Error loading product:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchProduct();
+    }
+  }, [id]);
 
   const handleBack = () => {
-    navigate("/");
+    navigate("/produits");
   };
 
   return (
     <div className="homepage">
       <Header />
       <main>
-        <ProductDetail product={product} onBack={handleBack} />
+        {loading ? (
+          <div style={{ padding: "50px", textAlign: "center" }}>Chargement...</div>
+        ) : product ? (
+          <ProductDetail product={product} onBack={handleBack} />
+        ) : (
+          <div style={{ padding: "50px", textAlign: "center" }}>Produit introuvable.</div>
+        )}
       </main>
       <Footer />
     </div>

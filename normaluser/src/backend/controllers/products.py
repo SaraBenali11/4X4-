@@ -5,9 +5,18 @@ from services.product_service import (
     create_product,
     remove_product,
     update_product,
+    list_categories,
 )
 
 bp = Blueprint('products', __name__)
+
+@bp.route('/categories', methods=['GET'])
+def categories_list():
+    try:
+        categories = list_categories()
+        return jsonify({'status': 'success', 'data': categories}), 200
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
 
 
 @bp.route('/products', methods=['GET'])
@@ -31,7 +40,7 @@ def products_create():
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 
-@bp.route('/products/<int:product_id>', methods=['GET'])
+@bp.route('/products/<string:product_id>', methods=['GET'])
 def products_get(product_id):
     try:
         p = get_product(product_id)
@@ -42,18 +51,18 @@ def products_get(product_id):
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 
-@bp.route('/products/<int:product_id>', methods=['DELETE'])
+@bp.route('/products/<string:product_id>', methods=['DELETE'])
 def products_delete(product_id):
     try:
-        ok = remove_product(product_id)
-        if not ok:
-            return jsonify({'status': 'error', 'message': 'Product not found'}), 404
-        return jsonify({'status': 'success', 'message': 'Product deleted successfully'}), 200
+        success, message = remove_product(product_id)
+        if not success:
+            return jsonify({'status': 'error', 'message': message}), 400
+        return jsonify({'status': 'success', 'message': message}), 200
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 
-@bp.route('/products/<int:product_id>', methods=['PUT'])
+@bp.route('/products/<string:product_id>', methods=['PUT'])
 def products_update(product_id):
     try:
         data = request.get_json() or {}
@@ -63,5 +72,25 @@ def products_update(product_id):
         if not updated:
             return jsonify({'status': 'error', 'message': 'Product not found'}), 404
         return jsonify({'status': 'success', 'message': 'Product updated successfully'}), 200
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+
+@bp.route('/upload', methods=['POST'])
+def upload_file():
+    try:
+        if 'file' not in request.files:
+            return jsonify({'status': 'error', 'message': 'No file part'}), 400
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({'status': 'error', 'message': 'No selected file'}), 400
+            
+        from services.product_service import upload_product_image
+        public_url = upload_product_image(file)
+        
+        if public_url:
+             return jsonify({'status': 'success', 'url': public_url}), 200
+        else:
+             return jsonify({'status': 'error', 'message': 'Upload failed'}), 500
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500

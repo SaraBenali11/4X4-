@@ -1,33 +1,17 @@
 import React, { useState, useContext } from "react";
-import { CartContext } from "../../context/CartContext";
-import { FavoritesContext } from "../../context/FavoritesContext";
-import { ShoppingBag } from "lucide-react";
 import PropTypes from "prop-types";
 import "../styles/ProductDetail.css";
-
-// Color mapping for visual display
-const colorMap = {
-  Noir: "#000000",
-  Blanc: "#FFFFFF",
-  Gris: "#808080",
-  Beige: "#F5F5DC",
-  Bleu: "#4169E1",
-  Rouge: "#DC143C",
-  Vert: "#228B22",
-  Jaune: "#FFD700",
-  Rose: "#FFB6C1",
-  Marron: "#8B4513",
-  Orange: "#FF8C00",
-  Violet: "#8B008B",
-};
+import { CartContext } from "../../context/CartContext";
+import { FavoritesContext } from "../../context/FavoritesContext";
 
 // ProductDetail Component
 const ProductDetail = ({ product, onBack }) => {
-  // Initialize state with null to force user selection
-  const [selectedSize, setSelectedSize] = useState(null);
-  const [selectedColor, setSelectedColor] = useState(null);
+  // Initialize state with safe defaults so hooks are always called in order
+  const [selectedSize, setSelectedSize] = useState(product?.sizes?.[0] ?? "M");
+  const [selectedColor, setSelectedColor] = useState(
+    product?.colors?.[0] ?? ""
+  );
   const [quantity, setQuantity] = useState(1);
-  const [error, setError] = useState("");
   const { addToCart } = useContext(CartContext);
   const { isFavorite, toggleFavorite: toggleFav } =
     useContext(FavoritesContext);
@@ -54,17 +38,6 @@ const ProductDetail = ({ product, onBack }) => {
   }
 
   const handleAddToCart = () => {
-    // Validate size and color selection
-    if (!selectedSize) {
-      setError("Veuillez sélectionner une taille");
-      return;
-    }
-    if (!selectedColor) {
-      setError("Veuillez sélectionner une couleur");
-      return;
-    }
-
-    setError("");
     addToCart({
       productId: product.id,
       name: product.name,
@@ -117,12 +90,10 @@ const ProductDetail = ({ product, onBack }) => {
           <div className="detail-right">
             <p className="detail-category">{product.category}</p>
             <h1 className="detail-title">{product.name}</h1>
-            <p className="detail-price">
-              {Math.round(product.price)
-                .toString()
-                .replace(/\B(?=(\d{3})+(?!\d))/g, " ")}{" "}
-              DA
-            </p>
+            <div className="detail-price">
+              <span className="current">{product.price} DA</span>
+              {product.oldPrice && <span className="old">{product.oldPrice} DA</span>}
+            </div>
 
             <div className="detail-section">
               <h3>Description</h3>
@@ -130,20 +101,14 @@ const ProductDetail = ({ product, onBack }) => {
             </div>
 
             <div className="detail-section">
-              <h3>
-                Taille <span className="required">*</span>
-              </h3>
+              <h3>Taille</h3>
               <div className="size-options">
                 {product.sizes.map((size) => (
                   <button
                     key={size}
-                    className={`size-btn ${
-                      selectedSize === size ? "active" : ""
-                    }`}
-                    onClick={() => {
-                      setSelectedSize(size);
-                      setError("");
-                    }}
+                    className={`size-btn ${selectedSize === size ? "active" : ""
+                      }`}
+                    onClick={() => setSelectedSize(size)}
                   >
                     {size}
                   </button>
@@ -152,33 +117,16 @@ const ProductDetail = ({ product, onBack }) => {
             </div>
 
             <div className="detail-section">
-              <h3>
-                Couleur <span className="required">*</span>
-              </h3>
+              <h3>Couleur</h3>
               <div className="color-options">
                 {product.colors.map((color) => (
                   <button
                     key={color}
-                    className={`color-circle ${
-                      selectedColor === color ? "active" : ""
-                    }`}
-                    style={{
-                      backgroundColor: colorMap[color] || "#cccccc",
-                      border:
-                        color === "Blanc"
-                          ? "2px solid #d4c5bd"
-                          : "2px solid transparent",
-                    }}
-                    onClick={() => {
-                      setSelectedColor(color);
-                      setError("");
-                    }}
-                    title={color}
-                    aria-label={color}
+                    className={`color-btn ${selectedColor === color ? "active" : ""
+                      }`}
+                    onClick={() => setSelectedColor(color)}
                   >
-                    {selectedColor === color && (
-                      <span className="check-icon">✓</span>
-                    )}
+                    {color}
                   </button>
                 ))}
               </div>
@@ -205,6 +153,12 @@ const ProductDetail = ({ product, onBack }) => {
               </ul>
             </div>
 
+
+
+            <button className="btn-primary" onClick={handleAddToCart}>
+              Ajouter au panier
+            </button>
+
             <div className="quantity-section">
               <label htmlFor="quantity">Quantité:</label>
               <div className="quantity-input">
@@ -224,23 +178,32 @@ const ProductDetail = ({ product, onBack }) => {
               </div>
             </div>
 
-            {error && <div className="error-message">{error}</div>}
-
-            <div className="product-actions">
-              <button
-                className="btn-add-to-cart"
-                onClick={handleAddToCart}
-                title="Ajouter au panier"
-              >
-                <ShoppingBag size={18} />
-                Ajouter au panier
+            <div className="button-group">
+              <button className="btn-secondary" onClick={handleToggleFavorite}>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill={favorited ? "currentColor" : "none"}
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                </svg>
+                {favorited ? "Favori ♥" : "Favori"}
               </button>
-              <button
-                className={`btn-favorite ${favorited ? "favorited" : ""}`}
-                onClick={handleToggleFavorite}
-              >
-                {favorited ? "♥" : "♡"}{" "}
-                {favorited ? "Retiré des" : "Ajouter aux"} favoris
+              <button className="btn-secondary">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <circle cx="18" cy="5" r="3" />
+                  <circle cx="6" cy="12" r="3" />
+                  <circle cx="18" cy="19" r="3" />
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                  <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                </svg>
+                Partager
               </button>
             </div>
 
@@ -266,6 +229,7 @@ ProductDetail.propTypes = {
     sizes: PropTypes.arrayOf(PropTypes.string).isRequired,
     colors: PropTypes.arrayOf(PropTypes.string).isRequired,
     features: PropTypes.arrayOf(PropTypes.string).isRequired,
+    availability: PropTypes.arrayOf(PropTypes.string).isRequired,
   }).isRequired,
   onBack: PropTypes.func.isRequired,
 };

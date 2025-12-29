@@ -1,79 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import FilterBar from "../components/Filters";
 import ProductCard from "../components/ProductCard";
 import "../styles/produits.css";
 import Header from "../components/header";
 import Footer from "../components/footer";
-import image1 from "../../assets/images/image.png";
-import image2 from "../../assets/images/img2.png";
-import image3 from "../../assets/images/img3.png";
-
-// Sample products data
-const productsData = [
-  {
-    id: 1,
-    image: image1,
-    name: "Abaya Élégante Beige",
-    category: "Abaya",
-    price: 8500,
-    isNew: true,
-    boutiques: 3,
-  },
-  {
-    id: 2,
-    image: image2,
-    name: "Robe Longue Crème",
-    category: "Robes",
-    price: 6500,
-    isNew: true,
-    boutiques: 3,
-  },
-  {
-    id: 3,
-    image: image3,
-    name: "Ensemble Chic Nude",
-    category: "Ensembles",
-    price: 7200,
-    isNew: false,
-    boutiques: 3,
-  },
-  {
-    id: 4,
-    image: image1,
-    name: "Pantalon Denim Élégant",
-    category: "Pantalons",
-    price: 5500,
-    isNew: false,
-    boutiques: 2,
-  },
-  {
-    id: 5,
-    image: image2,
-    name: "Haut Brodé Blanc",
-    category: "Hauts",
-    price: 4200,
-    isNew: true,
-    boutiques: 3,
-  },
-  {
-    id: 6,
-    image: image3,
-    name: "Ensemble Moderne Noir",
-    category: "Ensembles",
-    price: 9200,
-    isNew: false,
-    boutiques: 2,
-  },
-];
+import { productService } from "../../services/productService";
 
 function ProductsPage() {
   const location = useLocation();
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
     category: location.state?.category || "Tous",
     price: "Tous",
     sort: "Nouveautés",
   });
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   useEffect(() => {
     if (location.state?.category) {
@@ -84,18 +30,30 @@ function ProductsPage() {
     }
   }, [location.state]);
 
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const data = await productService.getProducts();
+      setProducts(data || []);
+    } catch (error) {
+      console.error("Error loading products:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
   };
 
   // Filter products based on selected filters
   const getFilteredProducts = () => {
-    let filtered = [...productsData];
+    let filtered = [...products];
 
     // Filter by category
     if (filters.category !== "Tous") {
       filtered = filtered.filter(
-        (product) => product.category === filters.category
+        (product) => (product.categories?.name === filters.category) || (product.category === filters.category)
       );
     }
 
@@ -120,7 +78,7 @@ function ProductsPage() {
     } else if (filters.sort === "Nom A-Z") {
       filtered.sort((a, b) => a.name.localeCompare(b.name));
     } else if (filters.sort === "Nouveautés") {
-      filtered.sort((a, b) => b.isNew - a.isNew);
+      // filtered.sort((a, b) => b.is_new - a.is_new);
     }
 
     return filtered;
@@ -151,20 +109,38 @@ function ProductsPage() {
               </p>
             </div>
 
-            <div className="products-grid">
-              {filteredProducts.map((product) => (
-                <div key={product.id} className="product-card-wrapper">
-                  <ProductCard
-                    image={product.image}
-                    name={product.name}
-                    category={product.category}
-                    price={product.price}
-                    isNew={product.isNew}
-                    productId={`p${product.id}`}
-                  />
-                </div>
-              ))}
-            </div>
+            {loading ? (
+              <p>Chargement...</p>
+            ) : (
+              <div className="products-grid">
+                {filteredProducts.map((product) => {
+                  // Get image from product_images relation
+                  const imgUrl = product.product_images && product.product_images.length > 0
+                    ? product.product_images[0].image_url
+                    : product.image_url || 'https://via.placeholder.com/300';
+
+                  return (
+                    <div key={product.id} className="product-card-wrapper">
+                      <Link to={`/product/${product.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                        <ProductCard
+                          image={imgUrl}
+                          name={product.name}
+                          category={product.categories?.name || product.category || ""}
+                          price={product.promo_price || product.price}
+                          oldPrice={product.promo_price ? product.price : null}
+                          isNew={product.status === 'new'}
+                          status={product.status}
+                          productId={product.id}
+                        />
+                      </Link>
+                      <div className="product-boutiques">
+                        <span style={{ fontSize: '12px', color: '#666' }}>Disponible</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </main>
         </div>
       </div>

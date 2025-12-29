@@ -15,7 +15,7 @@ export default function FilterBar({ onFilterChange, initialFilters }) {
     }
   }, [initialFilters]);
 
-  const categories = ['Tous', 'Abaya', 'Robes', 'Ensembles', 'Hauts', 'Pantalons'];
+  const categories = ['Tous', 'Foulard', 'Hijabs', 'Abaya', 'Robes', 'Jupes', 'Ensembles', 'Hauts', 'Pantalons', 'Accessoires'];
   const priceRanges = ['Tous', 'Moins de 6000 DA', '6000 - 8000 DA', 'Plus de 8000 DA'];
   const sortOptions = ['Nouveautés', 'Prix croissant', 'Prix décroissant', 'Nom A-Z'];
 
