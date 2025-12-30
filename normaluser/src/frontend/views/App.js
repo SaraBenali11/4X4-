@@ -15,6 +15,7 @@ import ContactUsPage from "./pages/contactuspage";
 import OutfitsPage from "./pages/outfitspage";
 import OutfitDetailsPage from "./pages/outfitdetails";
 import FavoritesPage from "./pages/favoritespage";
+import OrderForm from "./pages/orderform";
 
 export default function App() {
   const { toasts, addToast } = useToast();
@@ -42,6 +43,7 @@ export default function App() {
               <Route path="/contact-us" element={<ContactUsPage />} />
               <Route path="/outfits" element={<OutfitsPage />} />
               <Route path="/favorites" element={<FavoritesPage />} />
+              <Route path="/order" element={<OrderForm />} />
               <Route path="*" element={<h2>404: Page Not Found</h2>} />
             </Routes>
           </Router>

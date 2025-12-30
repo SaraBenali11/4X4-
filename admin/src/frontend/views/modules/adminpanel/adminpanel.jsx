@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../../styles/AdminPanel.css";
 
 import {
   stats,
-  initialOrders,
 } from "../../../../database/models/listsfortesting.js";
 
 import ProduitsContent from "../../components/ProduitsContent.jsx";
 import OutfitsContent from "./OutfitsContent.jsx";
 import OrderCard from "./ordercard.jsx";
+import { orderService } from "../../../services/orderService";
 
 import { useAdminAuth } from "../../../context/AdminAuthContext.jsx";
 import { Link, useNavigate } from "react-router-dom";
@@ -23,27 +23,117 @@ const iconMap = {
 
 export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState("commandes");
-  const [orders, setOrders] = useState(initialOrders);
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [statusFilter, setStatusFilter] = useState("all");
 
   const { logout } = useAdminAuth();
   const navigate = useNavigate();
 
-  const handleOrderStatusChange = (orderId, newStatus) => {
-    setOrders(
-      orders.map((order) =>
-        order.id === orderId ? { ...order, status: newStatus } : order
-      )
-    );
+  // Fetch orders from Supabase
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  const fetchOrders = async () => {
+    try {
+      setLoading(true);
+      const data = await orderService.getOrders();
+      // Transform data to match OrderCard format
+      const transformedOrders = data.map((order) => {
+        // Get first product name or combine all products
+        const productNames = order.order_items
+          ?.map((item) => item.product?.name || "Produit")
+          .join(", ") || "Produit";
+        
+        // Get first size or combine sizes
+        const sizes = order.order_items
+          ?.map((item) => item.size)
+          .join(", ") || "N/A";
+
+        // Format date
+        const date = order.created_at
+          ? new Date(order.created_at).toLocaleDateString("fr-FR", {
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+            })
+          : "";
+
+        // Normalize status to match UI expectations
+        let normalizedStatus = order.status || "En attente";
+        if (normalizedStatus.toLowerCase() === "en attente") {
+          normalizedStatus = "En attente";
+        } else if (normalizedStatus.toLowerCase() === "en cours") {
+          normalizedStatus = "En Cours";
+        } else if (normalizedStatus.toLowerCase() === "livrée" || normalizedStatus.toLowerCase() === "livree") {
+          normalizedStatus = "Livrée";
+        } else if (normalizedStatus.toLowerCase() === "retour") {
+          normalizedStatus = "Retour";
+        }
+
+        return {
+          id: order.id,
+          name: order.full_name,
+          status: normalizedStatus,
+          product: productNames,
+          phone: order.phone,
+          address: order.address,
+          notes: order.notes || "",
+          size: sizes,
+          wilaya: order.wilaya,
+          date: date,
+          email: order.email,
+          order_items: order.order_items, // Keep original for reference
+        };
+      });
+      setOrders(transformedOrders);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleOrderRemove = (orderId) => {
-    setOrders(orders.filter((order) => order.id !== orderId));
+  const handleOrderStatusChange = async (orderId, newStatus) => {
+    try {
+      // Normalize status to lowercase for database
+      const dbStatus = newStatus.toLowerCase();
+      await orderService.updateOrderStatus(orderId, dbStatus);
+      // Update local state with normalized status
+      const normalizedStatus = 
+        dbStatus === "en attente" ? "En attente" :
+        dbStatus === "en cours" ? "En Cours" :
+        dbStatus === "livrée" || dbStatus === "livree" ? "Livrée" :
+        dbStatus === "retour" ? "Retour" : newStatus;
+      
+      setOrders(
+        orders.map((order) =>
+          order.id === orderId ? { ...order, status: normalizedStatus } : order
+        )
+      );
+    } catch (error) {
+      console.error("Error updating order status:", error);
+      alert("Erreur lors de la mise à jour du statut");
+    }
+  };
+
+  const handleOrderRemove = async (orderId) => {
+    if (!window.confirm("Êtes-vous sûr de vouloir supprimer cette commande?")) {
+      return;
+    }
+    try {
+      await orderService.deleteOrder(orderId);
+      setOrders(orders.filter((order) => order.id !== orderId));
+    } catch (error) {
+      console.error("Error deleting order:", error);
+      alert("Erreur lors de la suppression de la commande");
+    }
   };
 
   const handleOrderAccept = (orderId) => {
-    handleOrderStatusChange(orderId, "En Cours");
+    handleOrderStatusChange(orderId, "en cours");
   };
 
   const handleLogout = () => {
@@ -64,10 +154,10 @@ export default function AdminPanel() {
     statusFilter === "all"
       ? orders
       : orders.filter((order) => {
-          const status = order.status.toLowerCase();
+          const status = order.status?.toLowerCase() || "";
           if (statusFilter === "en attente") return status === "en attente";
-          if (statusFilter === "en cours") return status === "en cours";
-          if (statusFilter === "livrée") return status === "livrée";
+          if (statusFilter === "en cours") return status === "en cours" || status === "en cours";
+          if (statusFilter === "livrée") return status === "livrée" || status === "livree";
           if (statusFilter === "retour") return status === "retour";
           return true;
         });
@@ -197,15 +287,25 @@ export default function AdminPanel() {
                 </div>
 
                 <div className="panel-content">
-                  {filteredOrders.map((o) => (
-                    <OrderCard
-                      key={o.id}
-                      order={o}
-                      onStatusChange={handleOrderStatusChange}
-                      onRemove={handleOrderRemove}
-                      onAccept={handleOrderAccept}
-                    />
-                  ))}
+                  {loading ? (
+                    <div style={{ padding: "2rem", textAlign: "center" }}>
+                      Chargement...
+                    </div>
+                  ) : filteredOrders.length === 0 ? (
+                    <div style={{ padding: "2rem", textAlign: "center", color: "#9b7f7a" }}>
+                      Aucune commande trouvée
+                    </div>
+                  ) : (
+                    filteredOrders.map((o) => (
+                      <OrderCard
+                        key={o.id}
+                        order={o}
+                        onStatusChange={handleOrderStatusChange}
+                        onRemove={handleOrderRemove}
+                        onAccept={handleOrderAccept}
+                      />
+                    ))
+                  )}
                 </div>
               </>
             )}

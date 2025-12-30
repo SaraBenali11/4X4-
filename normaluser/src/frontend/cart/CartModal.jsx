@@ -1,9 +1,11 @@
 import "./cart.css";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
 import { formatPrice } from "../utils/formatters";
 
 export default function CartModal({ open, onClose }) {
+  const navigate = useNavigate();
   const { cartItems, removeFromCart, updateQuantity, getTotalPrice } =
     useContext(CartContext);
 
@@ -38,11 +40,11 @@ export default function CartModal({ open, onClose }) {
           ) : (
             cartItems.map((item) => (
               <CartItem
-                key={`${item.productId}-${item.size}`}
+                key={`${item.productId}-${item.size}-${item.color || 'no-color'}`}
                 item={item}
-                onRemove={() => removeFromCart(item.productId, item.size)}
+                onRemove={() => removeFromCart(item.productId, item.size, item.color)}
                 onQuantityChange={(qty) =>
-                  updateQuantity(item.productId, item.size, qty)
+                  updateQuantity(item.productId, item.size, qty, item.color)
                 }
               />
             ))
@@ -54,9 +56,17 @@ export default function CartModal({ open, onClose }) {
             <span>Total</span>
             <strong>{formatPrice(totalPrice)}</strong>
           </div>
-          <button className="btn-order" disabled={cartItems.length === 0}>
-            Commander
-          </button>
+          {cartItems.length > 0 && (
+            <button
+              className="btn-order"
+              onClick={() => {
+                onClose();
+                navigate("/order");
+              }}
+            >
+              Commander
+            </button>
+          )}
         </div>
       </div>
     </div>
