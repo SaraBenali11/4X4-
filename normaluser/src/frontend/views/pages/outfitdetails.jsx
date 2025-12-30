@@ -16,13 +16,16 @@ export default function OutfitDetailsPage() {
     const fetchOutfit = async () => {
       try {
         setLoading(true);
-        // Fetch outfit and related products
+        // Fetch outfit and related products with their images
         const { data, error } = await supabase
           .from("outfits")
           .select(`
             *,
             outfit_products (
-               product:products (*)
+               product:products (
+                 *,
+                 product_images (*)
+               )
             )
           `)
           .eq("id", id)
@@ -31,7 +34,19 @@ export default function OutfitDetailsPage() {
         if (error) throw error;
 
         // Transform data
-        const products = data.outfit_products?.map(op => op.product) || [];
+        const products = data.outfit_products?.map(op => {
+          const product = op.product;
+          // Get the first product image if available
+          const productImage = product.product_images && product.product_images.length > 0
+            ? product.product_images[0].image_url
+            : "https://via.placeholder.com/100?text=No+Image";
+
+          return {
+            ...product,
+            image_url: productImage
+          };
+        }) || [];
+
         const formattedOutfit = {
           id: data.id,
           title: data.title,

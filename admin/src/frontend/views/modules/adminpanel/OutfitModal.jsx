@@ -20,7 +20,7 @@ export default function OutfitModal({ isOpen, onClose, outfit }) {
         setLoading(true);
         const { data, error } = await supabase
           .from("products")
-          .select("*")
+          .select("*, product_images(*)")
           .order("name");
 
         if (error) throw error;
@@ -231,31 +231,50 @@ export default function OutfitModal({ isOpen, onClose, outfit }) {
               {loading ? (
                 <p>Chargement des produits...</p>
               ) : (
-                allProducts.map((p) => (
-                  <div
-                    key={p.id}
-                    onClick={() => toggleProduct(p.id)}
-                    style={{
-                      ...styles.productItem,
-                      backgroundColor: selectedProducts.includes(p.id)
-                        ? "#E4D0D0"
-                        : "white",
-                      borderColor: selectedProducts.includes(p.id)
-                        ? "#867070"
-                        : "#eee",
-                    }}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selectedProducts.includes(p.id)}
-                      onChange={() => {}}
-                      style={{ marginRight: "10px" }}
-                    />
-                    <span>
-                      {p.name} - {p.price} DA
-                    </span>
-                  </div>
-                ))
+                allProducts.map((p) => {
+                  const productImage = p.product_images && p.product_images.length > 0
+                    ? p.product_images[0].image_url
+                    : null;
+
+                  return (
+                    <div
+                      key={p.id}
+                      onClick={() => toggleProduct(p.id)}
+                      style={{
+                        ...styles.productItem,
+                        backgroundColor: selectedProducts.includes(p.id)
+                          ? "#E4D0D0"
+                          : "white",
+                        borderColor: selectedProducts.includes(p.id)
+                          ? "#867070"
+                          : "#eee",
+                      }}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedProducts.includes(p.id)}
+                        onChange={() => { }}
+                        style={{ marginRight: "10px" }}
+                      />
+                      {productImage && (
+                        <img
+                          src={productImage}
+                          alt={p.name}
+                          style={{
+                            width: "40px",
+                            height: "40px",
+                            objectFit: "cover",
+                            borderRadius: "4px",
+                            marginRight: "10px",
+                          }}
+                        />
+                      )}
+                      <span>
+                        {p.name} - {p.price} DA
+                      </span>
+                    </div>
+                  );
+                })
               )}
               {allProducts.length === 0 && !loading && (
                 <p>Aucun produit disponible</p>
