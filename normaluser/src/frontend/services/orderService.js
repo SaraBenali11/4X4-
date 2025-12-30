@@ -209,24 +209,48 @@ Sutraty Store`;
       console.log('📧 Attempting to send email to:', orderData.email);
       console.log('📧 Using EmailJS service:', 'service_qvou8fu');
       console.log('📧 Using EmailJS template:', 'template_930wrjx');
+      console.log('📧 Email parameters:', {
+        to_name: orderData.full_name,
+        to_email: orderData.email,
+        subject: emailSubject,
+      });
+
+      // IMPORTANT: The template MUST have "To Email Address" set to {{to_email}}
+      // If your template uses different variable names, update them here
+      const emailParams = {
+        to_name: orderData.full_name,
+        to_email: orderData.email, // ⚠️ CRITICAL: Template "To" field MUST be {{to_email}}
+        email: orderData.email, // Fallback variable name (some templates use {{email}})
+        from_name: 'Sutraty Store',
+        subject: emailSubject,
+        message: emailMessage,
+        // Additional variables for template
+        order_date: orderDate,
+        delivery_address: deliveryAddress,
+        ordered_items: itemsList,
+        total_amount: totalFormatted,
+        customer_name: orderData.full_name,
+        customer_email: orderData.email,
+      };
 
       const emailResult = await emailjs.send(
-        'service_qvou8fu', // Service ID
-        'template_930wrjx', // Template ID - MUST be configured in EmailJS dashboard
-        {
-          from_name: 'Sutraty Store',
-          to_name: orderData.full_name,
-          to_email: orderData.email, // ⚠️ CRITICAL: Template must use {{to_email}} in "To" field
-          subject: emailSubject,
-          message: emailMessage,
-        },
-        'TKvxcyNi9ZkOUPm03' // Public Key (User ID)
+        'service_j0tmr7g', // Service ID
+        'template_pywan6o', // Template ID - MUST be configured in EmailJS dashboard
+        emailParams,
+        'dnotdgi_FL1bPL9Nr' // Public Key (User ID)
       );
 
       console.log('✅ EmailJS response:', emailResult);
+      console.log('✅ Email sent successfully! Status:', emailResult.status);
+      console.log('✅ Response text:', emailResult.text);
       
       if (emailResult.status !== 200) {
         throw new Error(`EmailJS returned status ${emailResult.status}: ${emailResult.text}`);
+      }
+
+      // Verify the email was actually sent
+      if (!emailResult.text || emailResult.text.includes('error')) {
+        throw new Error('EmailJS returned an error: ' + emailResult.text);
       }
     } catch (error) {
       console.error('❌ Error sending order confirmation email:', {

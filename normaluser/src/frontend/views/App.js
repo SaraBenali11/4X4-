@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { CartProvider } from "../context/CartContext";
 import { FavoritesProvider } from "../context/FavoritesContext";
-import { useToast, ToastContainer } from "./components/Toast";
 import CookieConsent from "./components/CookieConsent";
 import Homepage from "./pages/homepage";
 import Adminpanelpage from "./pages/adminpanelpage";
@@ -18,18 +17,11 @@ import FavoritesPage from "./pages/favoritespage";
 import OrderForm from "./pages/orderform";
 
 export default function App() {
-  const { toasts, addToast } = useToast();
-
-  const handleAddToCart = (productName) => {
-    addToast(`"${productName}" ajouté au panier`);
-  };
-
   return (
     <>
-      <ToastContainer toasts={toasts} />
       <CookieConsent />
       <FavoritesProvider>
-        <CartProvider onAddToCart={handleAddToCart}>
+        <CartProvider>
           <Router>
             <Routes>
               <Route path="/" element={<Homepage />} />

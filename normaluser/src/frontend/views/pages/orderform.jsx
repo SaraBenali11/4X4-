@@ -62,7 +62,7 @@ export default function OrderForm() {
       await orderService.createOrder({
         ...formData,
         cartItems,
-        status: "En Attente", // match DB check constraint (lowercase!)
+        status: "en attente", // match DB check constraint (lowercase!)
       });
 
       clearCart();
