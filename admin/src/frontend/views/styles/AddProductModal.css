@@ -1,0 +1,245 @@
+/* Basic modal styling aligned with AdminPanel look */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+}
+
+.modal {
+  background: #fff;
+  border-radius: 10px;
+  width: 95%;
+  max-width: 560px;
+  max-height: 86vh;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.16);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid #eee;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #fff;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.close-btn {
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.modal-body {
+  display: grid;
+  gap: 12px;
+  padding: 16px 20px;
+  overflow-y: auto;
+  /* allow body to take remaining space so footer sits at the end */
+  grid-auto-rows: min-content;
+}
+
+.modal-body label {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.modal-body input {
+  height: 38px;
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 16px 20px;
+  border-top: 1px solid #eee;
+  background: #fff;
+  /* footer follows content at the end of the modal */
+}
+
+.btn-secondary {
+  border: 1px solid #d44c59;
+  background: transparent;
+  color: #d44c59;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.btn-secondary:hover {
+  background: #ffe5e9;
+}
+.btn-secondary:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(212, 76, 89, 0.18);
+}
+
+.btn-primary {
+  border: none;
+  background: #d44c59;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 160ms ease, box-shadow 160ms ease;
+}
+.btn-primary:hover {
+  background: #c43f4c;
+}
+.btn-primary:active {
+  background: #b93745;
+}
+.btn-primary:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(212, 76, 89, 0.28);
+}
+.btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Color Picker Enhancements */
+.color-picker-section {
+  display: grid;
+  gap: 12px;
+}
+.color-picker-header {
+  font-weight: 600;
+}
+.color-picker-wrapper {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: center;
+}
+.color-picker-actions {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+}
+.selected-color-preview {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+.add-color-btn {
+  padding: 8px 12px;
+}
+.color-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.swatch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #eee;
+  border-radius: 999px;
+  padding: 4px 8px;
+}
+.swatch-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  border: 1px solid #ccc;
+}
+.swatch-label {
+  font-size: 12px;
+  color: #555;
+}
+.remove-swatch-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* Responsive small screens */
+@media (max-width: 640px) {
+  .modal {
+    width: 92%;
+    max-height: 90vh;
+  }
+  .color-picker-wrapper {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Subtle scrollbar styling to match theme */
+.modal-body::-webkit-scrollbar {
+  width: 10px;
+}
+.modal-body::-webkit-scrollbar-track {
+  background: #f2f2f2;
+  border-radius: 8px;
+}
+.modal-body::-webkit-scrollbar-thumb {
+  background: #d6d6d6;
+  border-radius: 8px;
+  border: 2px solid #f2f2f2;
+}
+.modal-body {
+  scrollbar-width: thin;
+  scrollbar-color: #d6d6d6 #f2f2f2;
+}
+
+/* Tag (sizes) input and chips */
+.tag-input-section {
+  display: grid;
+  gap: 10px;
+}
+.tag-input-header {
+  font-weight: 600;
+}
+.tag-input-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+.add-tag-btn {
+  padding: 8px 12px;
+}
+.tag-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border: 1px solid #eee;
+  border-radius: 999px;
+  font-size: 13px;
+  background: #fafafa;
+}
+.chip-remove {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+}
