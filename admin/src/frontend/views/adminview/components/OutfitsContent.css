@@ -1,0 +1,168 @@
+/* OutfitsContent Styles */
+
+.outfits-content {
+    width: 100%;
+}
+
+.outfits-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.outfits-title {
+    font-family: "Playfair Display", serif;
+    color: var(--dark-rose);
+    font-size: 24px;
+    margin: 0;
+}
+
+.add-outfit-btn {
+    background: var(--dark-rose);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.add-outfit-btn:hover {
+    background: var(--muted-rose);
+}
+
+/* Table container */
+.outfits-table-container {
+    overflow-x: auto;
+}
+
+.outfits-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card-bg);
+}
+
+.outfits-table thead {
+    background: var(--bg-rose);
+}
+
+.outfits-table th {
+    padding: 16px 12px;
+    text-align: left;
+    font-family: "Playfair Display", serif;
+    font-weight: 600;
+    color: var(--dark-rose);
+    border-bottom: 2px solid rgba(213, 180, 180, 0.3);
+    font-size: 14px;
+}
+
+.outfits-table td {
+    padding: 16px 12px;
+    border-bottom: 1px solid rgba(213, 180, 180, 0.2);
+    color: var(--dark-rose);
+    font-size: 14px;
+}
+
+.outfits-table tbody tr:hover {
+    background: var(--bg-rose);
+}
+
+/* Cell styles */
+.outfit-title-cell {
+    font-weight: 600;
+    color: var(--dark-rose);
+}
+
+.outfit-desc-cell {
+    color: var(--muted-rose);
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.products-count {
+    background: var(--soft-rose);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--dark-rose);
+}
+
+.no-products {
+    color: var(--muted-rose);
+    font-style: italic;
+}
+
+.outfit-date-cell {
+    color: var(--muted-rose);
+}
+
+/* Action buttons */
+.outfit-actions-cell {
+    display: flex;
+    gap: 8px;
+}
+
+.outfit-actions-cell .edit-btn,
+.outfit-actions-cell .delete-btn {
+    background: transparent;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.outfit-actions-cell .edit-btn:hover {
+    background: var(--soft-rose);
+}
+
+.outfit-actions-cell .delete-btn:hover {
+    background: #ffe0e0;
+}
+
+/* Empty row */
+.empty-row {
+    text-align: center;
+    padding: 40px !important;
+    color: var(--muted-rose);
+    font-style: italic;
+}
+
+/* Loading and error states */
+.loading-state,
+.error-state {
+    padding: 40px;
+    text-align: center;
+    color: var(--muted-rose);
+}
+
+.error-state {
+    color: var(--danger);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .outfits-header {
+        flex-direction: column;
+        gap: 16px;
+        align-items: flex-start;
+    }
+
+    .outfits-table th,
+    .outfits-table td {
+        padding: 12px 8px;
+        font-size: 13px;
+    }
+
+    .outfit-desc-cell {
+        max-width: 120px;
+    }
+}

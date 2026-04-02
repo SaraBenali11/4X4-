@@ -1,0 +1,139 @@
+.favorites-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f5f0ed;
+}
+
+.favorites-container {
+  flex: 1;
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+
+.favorites-header {
+  margin-bottom: 48px;
+  text-align: center;
+}
+
+.favorites-header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+  font-family: "Playfair Display", serif;
+  color: #5d5a57;
+  margin-bottom: 8px;
+}
+
+.favorites-count {
+  font-size: 15px;
+  color: #b8a39a;
+  margin: 0;
+  font-weight: 500;
+}
+
+.empty-favorites {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 80px;
+  margin-bottom: 24px;
+  opacity: 0.6;
+}
+
+.empty-favorites h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #5d5a57;
+  margin-bottom: 12px;
+  font-family: "Playfair Display", serif;
+}
+
+.empty-favorites p {
+  margin: 0 0 32px 0;
+  font-size: 15px;
+  color: #b8a39a;
+  max-width: 400px;
+}
+
+.btn-back-shopping {
+  padding: 14px 32px;
+  background: #b8a39a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-back-shopping:hover {
+  background: #a0938a;
+}
+
+.favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .favorites-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .favorites-container {
+    padding: 40px 16px;
+  }
+
+  .favorites-header {
+    margin-bottom: 32px;
+  }
+
+  .favorites-header h1 {
+    font-size: 2rem;
+  }
+
+  .favorites-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .favorites-container {
+    padding: 32px 12px;
+  }
+
+  .favorites-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .favorites-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .empty-icon {
+    font-size: 60px;
+  }
+
+  .empty-favorites h2 {
+    font-size: 18px;
+  }
+}

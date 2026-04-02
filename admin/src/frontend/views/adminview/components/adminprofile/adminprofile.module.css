@@ -1,0 +1,171 @@
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px;
+}
+
+.header {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--dark-rose, #867070);
+  display: grid;
+  place-items: center;
+  color: white;
+  font-size: 24px;
+}
+
+h3 {
+  margin: 0;
+  color: var(--text);
+}
+
+p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.info span {
+  display: block;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.info strong {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.editButton {
+  margin-left: auto;
+  padding: 8px 16px;
+  background: var(--dark-rose, #867070);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.editButton:hover {
+  background: var(--muted-rose, #D5B4B4);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.formGroup label {
+  color: var(--text);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.formGroup input,
+.formGroup textarea {
+  padding: 10px 12px;
+  border: 1px solid var(--border, #ddd);
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus {
+  outline: none;
+  border-color: var(--dark-rose, #867070);
+}
+
+.formGroup textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.formActions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.saveButton,
+.cancelButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.saveButton {
+  background: var(--dark-rose, #867070);
+  color: white;
+}
+
+.saveButton:hover:not(:disabled) {
+  background: var(--muted-rose, #D5B4B4);
+}
+
+.saveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cancelButton {
+  background: var(--muted, #f0f0f0);
+  color: var(--text);
+}
+
+.cancelButton:hover:not(:disabled) {
+  background: var(--border, #ddd);
+}
+
+.successMessage {
+  padding: 12px;
+  background: #d4edda;
+  color: #155724;
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.errorMessage {
+  padding: 12px;
+  background: #f8d7da;
+  color: #721c24;
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.fieldError {
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: -4px;
+}
